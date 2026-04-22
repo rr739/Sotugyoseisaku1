@@ -30,6 +30,8 @@ public class NetworkManager : MonoBehaviour
             otherCharacter = player1;
         }
 
+        networkPosition = otherCharacter.transform.position;
+
         var uri = new Uri("http://192.168.56.102:3000");
         socket = new SocketIOUnity(uri);
 
@@ -39,10 +41,11 @@ public class NetworkManager : MonoBehaviour
             string cleanedJson = rawJson.Substring(1, rawJson.Length - 2);
             PositionData data = JsonUtility.FromJson<PositionData>(cleanedJson);
 
-            // 届いたデータが「自分じゃない方」の番号なら、相手のキャラを動かす
-            if (data.playerNumber != (isPlayer1 ? 1 : 2))
+            int myNumber = isPlayer1 ? 1 : 2;
+            if (data.playerNumber != myNumber)
             {
-                // UpdateでLerpするために座標を保存
+                // ログを追加して、データが届いているか確認！
+                Debug.Log($"相手(Player{data.playerNumber})の座標を受信: {data.x}, {data.y}");
                 networkPosition = new Vector3(data.x, data.y, data.z);
             }
         });
@@ -65,6 +68,8 @@ public class NetworkManager : MonoBehaviour
         {
             otherCharacter.transform.position = Vector3.Lerp(otherCharacter.transform.position, networkPosition, 0.1f);
         }
+
+        
     }
 
     System.Collections.IEnumerator SendPositionLoop()
