@@ -8,18 +8,18 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player1
+  - 
   - Water
   - UI
-  - Player2
-  - PathFire
-  - PathWater
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player_Fire
+  - Player_Ice
+  - Path_Fire
+  - Path_Ice
+  - Pushable
+  - Ground
+  - Wall
+  - Projectile_Fire
+  - Projectile_Ice
   - 
   - 
   - 
