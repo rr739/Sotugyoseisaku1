@@ -1,60 +1,62 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Unity.Netcode;
+using System.Threading.Tasks;
+using NativeWebSocket;
 
-
-public class PlayerControll : NetworkBehaviour
+public class PlayerController : MonoBehaviour
 {
+    [SerializeField] float moveSpeed = 5.0f;
 
-    private Rigidbody2D _rigidbody2D;
-    private Vector2 _velocity;
-    private float _moveForce = 5f;
+    PlayerManager pm;
+    TopViewClient client;
+    async Task SendPlayerData(Vector3 pos)
+    {
+        if (client.ws.State == WebSocketState.Open)
+        {
+            var playerData = new PlayerData
+            {
+                id = pm.myPlayerId,
+                position_x = pos.x,
+                position_y = pos.y,
+            };
 
+            var jsonMsg = JsonUtility.ToJson(playerData);
+            await client.ws.SendText(jsonMsg);
+        }
+    }
+    void MovePlayer()
+    {
+        // 自身がプレイヤーリストに登録された後にチェック
+        if (pm.players.ContainsKey(pm.myPlayerId))
+        {
+            var move = Vector3.zero;
+
+            if (Input.GetKey(KeyCode.W)) move.y += 1;
+            if (Input.GetKey(KeyCode.S)) move.y -= 1;
+            if (Input.GetKey(KeyCode.A)) move.x -= 1;
+            if (Input.GetKey(KeyCode.D)) move.x += 1;
+
+            move *= moveSpeed * Time.deltaTime;
+
+            // 移動処理
+            if (move != Vector3.zero)
+            {
+                var player = pm.players[pm.myPlayerId];
+                player.transform.Translate(move);
+
+                // プレイヤー情報をサーバに送信
+                _ = SendPlayerData(player.transform.position);
+            }
+        }
+    }
     void Start()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-
-
+        pm = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
+        client = GameObject.Find("WebSocket").GetComponent<TopViewClient>();
     }
+
     void Update()
     {
-
-        if (this.IsOwner)
-        {
-            Vector2 velocity = new Vector2();
-            if (Input.GetKey(KeyCode.W))
-            {
-                velocity.y = 1.0f;
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                velocity.y = -1.0f;
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                velocity.x = -1.0f;
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                velocity.x = 1.0f;
-            }
-            velocity.Normalize();
-            SetMoveInputServerRpc(velocity);
-        }
-
-        if (this.IsServer)
-        {
-            _rigidbody2D.velocity = _velocity * _moveForce;
-        }
-
-        
-
-    }
-
-    [Unity.Netcode.ServerRpc]
-    private void SetMoveInputServerRpc(Vector2 velocity)
-    {
-        _velocity = velocity;
+        // 移動処理
+        MovePlayer();
     }
 }
