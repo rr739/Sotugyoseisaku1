@@ -7,6 +7,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] GameObject playerPrefab; // プレイヤーを表すPrefab
     public Dictionary<string, GameObject> players = new Dictionary<string, GameObject>(); // プレイヤーの一覧
     public string myPlayerId; // 自分のプレイヤーID
+    public int myPlayerIndex;
     public void CreatePlayer(string id, Vector3 pos, bool isLocal)
     {
         // プレイヤーオブジェクト生成

@@ -15,4 +15,5 @@ public class InitResponse
 {
     public string type;
     public string id;
+    public int index;
 }

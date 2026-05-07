@@ -32,6 +32,10 @@ public class TopViewClient : MonoBehaviour
         {
             // 自分のIDを保存
             pm.myPlayerId = res.id;
+            pm.myPlayerIndex = res.index;
+
+            Debug.Log($"<color=cyan>【システム】接続完了。自分のID: {res.id}, 入室順: {res.index}</color>");
+
             // プレイヤーの初期化
             pm.CreatePlayer(res.id, Vector3.zero, true);
         }
