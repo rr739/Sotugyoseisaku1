@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using WebSocket = NativeWebSocket.WebSocket;
 using System.Net.WebSockets;
+using Unity.Mathematics;
 
 public class TopViewClient : MonoBehaviour
 {
@@ -45,9 +46,9 @@ public class TopViewClient : MonoBehaviour
         }
     }
     
-    async void Connect(string roomID, string playerName)
+    async void Connect(string roomID, int playerIndex)
     {
-        ws = new WebSocket($"ws://10.22.8.82:8080/ws?room_id={roomID}&name={playerName}");
+        ws = new WebSocket($"ws://10.22.8.82:8080/ws?room_id={roomID}&name={playerIndex}");
 
         ws.OnOpen += () =>
         {
@@ -66,15 +67,15 @@ public class TopViewClient : MonoBehaviour
     public void PushJoinButton()
     {
         var roomId = "room123";
-        var playerName = inputPlayerName.text;
+        var playerIndex = pm.myPlayerIndex;
 
-        if (roomId == "" || playerName == "")
+        if (roomId == "" )
         {
             print("ルームID、プレイヤー名は必須です");
             return;
         }
 
-        Connect(roomId, playerName);
+        Connect(roomId, playerIndex);
     }
 
 }
