@@ -8,14 +8,14 @@ public class PlayerManager : MonoBehaviour
     public Dictionary<string, GameObject> players = new Dictionary<string, GameObject>(); // プレイヤーの一覧
     public string myPlayerId; // 自分のプレイヤーID
     public int myPlayerIndex;
-    public void CreatePlayer(string id, Vector3 pos, bool isLocal)
+    public void CreatePlayer(string id, Vector3 pos, bool isLocal ,int index)
     {
         // プレイヤーオブジェクト生成
         var canvas = GameObject.Find("Canvas");
         var player = Instantiate(playerPrefab, pos, Quaternion.identity, canvas.transform);
 
         // 色指定
-        if (isLocal)
+        if (index == 0)
         {
             // 自分自身
             player.GetComponent<Image>().color = Color.red;
@@ -42,7 +42,7 @@ public class PlayerManager : MonoBehaviour
         if (!players.ContainsKey(playerData.id))
         {
             // リストに存在しなければ登録
-            CreatePlayer(playerData.id, Vector3.zero, false);
+            CreatePlayer(playerData.id, Vector3.zero, false,playerData.index);
         }
         else
         {

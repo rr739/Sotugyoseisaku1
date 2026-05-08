@@ -8,6 +8,7 @@ public class PlayerData
     public string room_id;     // Š‘®‚·‚éƒ‹[ƒ€ID
     public float position_x;   // XÀ•W
     public float position_y;   // YÀ•W
+    public int index;          // 
 }
 
 [Serializable]

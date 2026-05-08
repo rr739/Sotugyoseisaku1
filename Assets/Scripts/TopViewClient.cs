@@ -37,7 +37,7 @@ public class TopViewClient : MonoBehaviour
             Debug.Log($"<color=cyan>【システム】接続完了。自分のID: {res.id}, 入室順: {res.index}</color>");
 
             // プレイヤーの初期化
-            pm.CreatePlayer(res.id, Vector3.zero, true);
+            pm.CreatePlayer(res.id, Vector3.zero, true,res.index);
         }
         else
         {
