@@ -47,7 +47,7 @@ public class TopViewClient : MonoBehaviour
     
     async void Connect(string roomID, string playerName)
     {
-        ws = new WebSocket($"ws://192.168.56.102:8080/ws?room_id={roomID}&name={playerName}");
+        ws = new WebSocket($"ws://10.22.8.82:8080/ws?room_id={roomID}&name={playerName}");
 
         ws.OnOpen += () =>
         {
