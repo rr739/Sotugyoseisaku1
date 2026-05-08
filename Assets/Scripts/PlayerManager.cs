@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour
     public Dictionary<string, GameObject> players = new Dictionary<string, GameObject>(); // プレイヤーの一覧
     public string myPlayerId; // 自分のプレイヤーID
     public int myPlayerIndex;
-    public void CreatePlayer(string id, Vector3 pos, bool isLocal ,int index)
+    public void CreatePlayer(string id, Vector3 pos ,int index)
     {
         // プレイヤーオブジェクト生成
         var canvas = GameObject.Find("Canvas");
@@ -42,7 +42,7 @@ public class PlayerManager : MonoBehaviour
         if (!players.ContainsKey(playerData.id))
         {
             // リストに存在しなければ登録
-            CreatePlayer(playerData.id, Vector3.zero, false,playerData.index);
+            CreatePlayer(playerData.id, Vector3.zero,playerData.index);
         }
         else
         {
