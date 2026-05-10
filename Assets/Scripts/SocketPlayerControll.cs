@@ -14,7 +14,7 @@ public class SocketPlayerController : MonoBehaviour
         {
             var playerData = new PlayerData
             {
-                id = pm.myPlayerId,
+                name_id = pm.myPlayerId,
                 position_x = pos.x,
                 position_y = pos.y,
             };

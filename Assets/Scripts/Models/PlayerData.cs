@@ -1,20 +1,20 @@
 using System;
-
-[Serializable]
-public class PlayerData
-{
-    public string id;          // 一意のプレイヤーID
-    public string name;        // プレイヤーの名前
-    public string room_id;     // 所属するルームID
-    public float position_x;   // X座標
-    public float position_y;   // Y座標
-    public int index;          // 
-}
-
 [Serializable]
 public class InitResponse
 {
     public string type;
-    public string id;
+    public string name_id;  
+    public string room_id;     // 所属するルームID
     public int index;
 }
+
+[Serializable]
+public class PlayerData: InitResponse
+{
+    
+    public float position_x;   // X座標
+    public float position_y;   // Y座標
+  
+}
+
+

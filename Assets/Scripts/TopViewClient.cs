@@ -1,23 +1,27 @@
 using UnityEngine;
 
 using WebSocket = NativeWebSocket.WebSocket;
-
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Net.WebSockets;
 using Unity.Mathematics;
 
 public class TopViewClient : MonoBehaviour
 {
-
-   /* [SerializeField] InputField inputRoomId;
-    [SerializeField] InputField inputPlayerName;*/
+    [SerializeField] InputField inputPlayerName;
+    [SerializeField] InputField  inputRoomId;
+    
     PlayerManager pm;
     public WebSocket ws;
 
-    private string room = " 123room";
+    public string myPlayerId; // 自分のプレイヤーID
+    public string myRoomID;
+    public int myPlayerIndex;
+
+
     void Start()
     {
-        pm = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
+       // pm = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
 
 
     }
@@ -38,24 +42,25 @@ public class TopViewClient : MonoBehaviour
         if (res.type == "init")
         {
             // 自分のIDを保存
-            pm.myPlayerId = res.id;
-            pm.myPlayerIndex = res.index;
+            myPlayerId = res.name_id;
+            myRoomID   = res.room_id;
+            myPlayerIndex = res.index;
 
-            Debug.Log($"<color=cyan>【システム】接続完了。自分のID: {res.id}, 入室順: {res.index}</color>");
+            Debug.Log($"<color=cyan>【システム】接続完了。自分のID: {res.name_id}, 入室順: {res.index}</color>");
 
             // プレイヤーの初期化
-            pm.CreatePlayer(res.id, Vector3.zero,res.index);
+            //CreatePlayer(res.name_id, Vector3.zero,res.index);
         }
         else
         {
-            pm.HandleWebSocketMessage(msg);
+            //pm.HandleWebSocketMessage(msg);
         }
     }
     
-    async void Connect(string roomID, int playerIndex)
+    async void Connect(string playerID, string roomID, int playerIndex)
     {
-        ws = new WebSocket($"ws://10.22.8.82:8080/ws?room_id={roomID}&name={playerIndex}");
-
+        
+        ws = new WebSocket($"ws://10.22.8.82:8080/ws?room_id={roomID}&name={playerID}");
         ws.OnOpen += () =>
         {
             print("接続成功");
@@ -73,18 +78,19 @@ public class TopViewClient : MonoBehaviour
     }
     public void PushJoinButton()
     {
-        var roomId = room;
-        var playerIndex = pm.myPlayerIndex;
+        var playerNameInput = inputPlayerName.text; // 変数名をわかりやすく
+        var roomIdInput = inputRoomId.text;
 
-        if (roomId == ""  )
+        // デバッグ：ここが空になっていないかチェック！
+        Debug.Log($"接続試行: Name={playerNameInput}, Room={roomIdInput}");
+
+        if (string.IsNullOrEmpty(roomIdInput) || string.IsNullOrEmpty(playerNameInput))
         {
             print("ルームID、プレイヤー名は必須です");
             return;
         }
 
-        Connect(roomId, playerIndex);
-
-        
+        Connect(playerNameInput, roomIdInput, 0); // indexはサーバーが決めるので一旦0でOK
     }
 
 }
