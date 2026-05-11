@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Net.WebSockets;
 using Unity.Mathematics;
+using UnityEngine.UIElements;
 
 public class TopViewClient : MonoBehaviour
 {
@@ -18,12 +19,18 @@ public class TopViewClient : MonoBehaviour
     public string myRoomID;
     public int myPlayerIndex;
 
+    public GameObject InputPanel;
+    public GameObject LobbyPanel;
+
+    public Text P1Text;
+    public Text P2Text;
+
 
     void Start()
     {
-       // pm = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
+        // pm = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
 
-
+        Init(true,false);
     }
 
     void Update()
@@ -60,7 +67,7 @@ public class TopViewClient : MonoBehaviour
     async void Connect(string playerID, string roomID, int playerIndex)
     {
         
-        ws = new WebSocket($"ws://10.22.8.82:8080/ws?room_id={roomID}&name={playerID}");
+        ws = new WebSocket($"ws://10.22.8.43:8080/ws?room_id={roomID}&name_id={playerID}");
         ws.OnOpen += () =>
         {
             print("接続成功");
@@ -90,7 +97,27 @@ public class TopViewClient : MonoBehaviour
             return;
         }
 
-        Connect(playerNameInput, roomIdInput, 0); // indexはサーバーが決めるので一旦0でOK
+        Init(false,true);
+        LobbyList();
+
+        Connect(playerNameInput, roomIdInput,myPlayerIndex); 
     }
 
+    private void Init(bool IP, bool LP)
+    {
+        InputPanel.SetActive(IP);
+        LobbyPanel.SetActive(LP);
+    }
+
+    private void LobbyList()
+    {
+        if(myPlayerIndex == 0)
+        {
+            P1Text.text = inputPlayerName.text;
+        }
+        else if (myPlayerIndex == 1)
+        {
+            P2Text.text = inputPlayerName.text;
+        }
+    }
 }
