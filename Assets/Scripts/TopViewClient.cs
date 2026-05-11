@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 using System.Net.WebSockets;
 using Unity.Mathematics;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
+using static UnityEditor.Experimental.GraphView.GraphView;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 
 public class TopViewClient : MonoBehaviour
 {
@@ -25,6 +29,8 @@ public class TopViewClient : MonoBehaviour
     public Text P1Text;
     public Text P2Text;
 
+    string remotePlayer;
+    public Dictionary<string, GameObject> players = new Dictionary<string, GameObject>(); // プレイヤーの一覧
 
     void Start()
     {
@@ -35,6 +41,9 @@ public class TopViewClient : MonoBehaviour
 
     void Update()
     {
+
+        
+
 #if !UNITY_WEBGL || UNITY_EDITOR
         if (ws != null)
         {
@@ -55,19 +64,26 @@ public class TopViewClient : MonoBehaviour
 
             Debug.Log($"<color=cyan>【システム】接続完了。自分のID: {res.name_id}, 入室順: {res.index}</color>");
 
+        
+
+           
             // プレイヤーの初期化
             //CreatePlayer(res.name_id, Vector3.zero,res.index);
+
+           
         }
         else
         {
-            //pm.HandleWebSocketMessage(msg);
+            HandleWebSocketMessage(msg);
         }
+
+        LobbyList(res.name_id, res.index);
     }
     
     async void Connect(string playerID, string roomID, int playerIndex)
     {
         
-        ws = new WebSocket($"ws://10.22.8.43:8080/ws?room_id={roomID}&name_id={playerID}");
+        ws = new WebSocket($"ws://10.22.8.43:8080/ws?room_id={roomID}&name_id={playerID}"); 
         ws.OnOpen += () =>
         {
             print("接続成功");
@@ -98,7 +114,7 @@ public class TopViewClient : MonoBehaviour
         }
 
         Init(false,true);
-        LobbyList();
+        
 
         Connect(playerNameInput, roomIdInput,myPlayerIndex); 
     }
@@ -109,15 +125,37 @@ public class TopViewClient : MonoBehaviour
         LobbyPanel.SetActive(LP);
     }
 
-    private void LobbyList()
+    private void LobbyList(string playerID, int playerIndex)
     {
-        if(myPlayerIndex == 0)
+        
+
+        if (playerIndex == 0)
         {
-            P1Text.text = inputPlayerName.text;
+            P1Text.text = playerID;
+
+            P2Text.text = remotePlayer;
         }
-        else if (myPlayerIndex == 1)
+        else if (playerIndex == 1)
         {
-            P2Text.text = inputPlayerName.text;
+            P1Text.text = remotePlayer;
+            P2Text.text = playerID;
+        }
+    }
+
+  
+
+    private void HandleWebSocketMessage(string msg)
+    {
+        var playerData = JsonUtility.FromJson<PlayerData>(msg);
+
+        if (!players.ContainsKey(playerData.name_id))
+        {
+            // リストに存在しなければ登録
+            remotePlayer = playerData.name_id;
+        }
+        else
+        {
+           
         }
     }
 }
