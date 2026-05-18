@@ -7,9 +7,12 @@ using System.Net.WebSockets;
 using Unity.Mathematics;
 using UnityEngine.UIElements;
 using Unity.VisualScripting;
-using static UnityEditor.Experimental.GraphView.GraphView;
+
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using static UnityEditor.PlayerSettings;
+using UnityEditor.PackageManager;
+using System.Threading.Tasks;
 
 public class TopViewClient : MonoBehaviour
 {
@@ -28,6 +31,7 @@ public class TopViewClient : MonoBehaviour
 
     public Text P1Text;
     public Text P2Text;
+    public GameObject StartButto;
 
     string remotePlayer;
     public Dictionary<string, GameObject> players = new Dictionary<string, GameObject>(); // プレイヤーの一覧
@@ -64,8 +68,6 @@ public class TopViewClient : MonoBehaviour
 
             Debug.Log($"<color=cyan>【システム】接続完了。自分のID: {res.name_id}, 入室順: {res.index}</color>");
 
-        
-
            
             // プレイヤーの初期化
             //CreatePlayer(res.name_id, Vector3.zero,res.index);
@@ -74,10 +76,11 @@ public class TopViewClient : MonoBehaviour
         }
         else
         {
+            Debug.Log("a");
             HandleWebSocketMessage(msg);
         }
-
-        LobbyList(res.name_id, res.index);
+        StartCheck(myPlayerIndex);
+        LobbyList(myPlayerId, myPlayerIndex);
     }
     
     async void Connect(string playerID, string roomID, int playerIndex)
@@ -119,6 +122,31 @@ public class TopViewClient : MonoBehaviour
         Connect(playerNameInput, roomIdInput,myPlayerIndex); 
     }
 
+  /*  public void PushGameStartButton()
+    {
+        
+        var InitResponse = new InitResponse
+        {
+            IsStarted = true,
+        };
+
+        var jsonMsg = JsonUtility.ToJson(InitResponse);
+        await ws.SendText(jsonMsg);
+    }*/
+
+    public async Task SendPlayerData()
+    {
+
+        var InitResponse = new InitResponse
+        {
+            IsStarted = true,
+        };
+
+        var jsonMsg = JsonUtility.ToJson(InitResponse);
+        await ws.SendText(jsonMsg);
+
+    }
+
     private void Init(bool IP, bool LP)
     {
         InputPanel.SetActive(IP);
@@ -148,14 +176,28 @@ public class TopViewClient : MonoBehaviour
     {
         var playerData = JsonUtility.FromJson<PlayerData>(msg);
 
-        if (!players.ContainsKey(playerData.name_id))
+        if (playerData.name_id != myPlayerId) // 自分以外なら
         {
-            // リストに存在しなければ登録
             remotePlayer = playerData.name_id;
         }
         else
         {
            
+        }
+    }
+
+    private void StartCheck(int playerIndex)
+    {
+        if (P1Text.text == null || P2Text.text == null)
+        {
+            StartButto.SetActive(false);
+        }
+        else
+        {
+            if(playerIndex == 0)
+            {
+                StartButto.SetActive(true);
+            }
         }
     }
 }

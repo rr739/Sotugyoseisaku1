@@ -7,6 +7,6 @@ public class TitalManager : MonoBehaviour
 {
     public void ClickNextScene()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("SecondScene");
     }
 }
