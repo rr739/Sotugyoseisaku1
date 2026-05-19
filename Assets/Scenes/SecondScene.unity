@@ -193,7 +193,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ...
+  m_Text: 
 --- !u!222 &33861980
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -532,7 +532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 369580034}
-  - component: {fileID: 369580033}
+  - component: {fileID: 369580035}
   m_Layer: 0
   m_Name: WebSocket
   m_TagString: Untagged
@@ -540,28 +540,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &369580033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 369580032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d80cb68eac13af4b922a99a0b2f4c3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputPlayerName: {fileID: 530461064}
-  inputRoomId: {fileID: 1468616238}
-  myPlayerId: 
-  myRoomID: 
-  myPlayerIndex: 0
-  InputPanel: {fileID: 41677943}
-  LobbyPanel: {fileID: 34074002}
-  P1Text: {fileID: 33861979}
-  P2Text: {fileID: 779038275}
-  StartButto: {fileID: 738954009}
 --- !u!4 &369580034
 Transform:
   m_ObjectHideFlags: 0
@@ -577,6 +555,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &369580035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369580032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 252ff35a5e0405f4fb572bd861a18d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myPlayerId: 
+  myRoomID: 
+  myPlayerIndex: 0
 --- !u!1 &484080674
 GameObject:
   m_ObjectHideFlags: 0
@@ -964,10 +957,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 369580033}
-        m_TargetAssemblyTypeName: UnityEngine.Component, UnityEngine
-        m_MethodName: SendMessage
-        m_Mode: 5
+      - m_Target: {fileID: 2146094887}
+        m_TargetAssemblyTypeName: TopViewClient, Assembly-CSharp
+        m_MethodName: SendPlayerData
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1084,7 +1077,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ...
+  m_Text: 
 --- !u!222 &779038276
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1842,7 +1835,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 369580033}
+      - m_Target: {fileID: 2146094887}
         m_TargetAssemblyTypeName: TopViewClient, Assembly-CSharp
         m_MethodName: PushJoinButton
         m_Mode: 1
@@ -2556,6 +2549,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033044321}
   m_CullTransparentMesh: 1
+--- !u!1 &2146094886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2146094888}
+  - component: {fileID: 2146094887}
+  m_Layer: 0
+  m_Name: UpdateUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2146094887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146094886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d80cb68eac13af4b922a99a0b2f4c3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputPlayerName: {fileID: 530461064}
+  inputRoomId: {fileID: 1468616238}
+  InputPanel: {fileID: 41677943}
+  LobbyPanel: {fileID: 34074002}
+  P1Text: {fileID: 33861979}
+  P2Text: {fileID: 779038275}
+  StartButton: {fileID: 738954009}
+--- !u!4 &2146094888
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146094886}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5867859, y: -0.80816424, z: 0.024751257}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2565,3 +2609,4 @@ SceneRoots:
   - {fileID: 1298181972}
   - {fileID: 369580034}
   - {fileID: 1020977956}
+  - {fileID: 2146094888}
