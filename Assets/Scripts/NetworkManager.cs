@@ -2,7 +2,7 @@
 using WebSocket = NativeWebSocket.WebSocket;
 using System;
 using System.Threading.Tasks;
-using UnityEngine.SceneManagement; // 🟢 シーン検知のために追加
+using UnityEngine.SceneManagement; 
 
 public class NetworkManager : MonoBehaviour
 {
@@ -42,7 +42,7 @@ public class NetworkManager : MonoBehaviour
         myPlayerId = playerID;
         myRoomID = roomID;
 
-        ws = new WebSocket($"ws://192.168.1.12:8080/ws?room_id={roomID}&name_id={playerID}");
+        ws = new WebSocket($"ws://10.22.5.7:8080/ws?room_id={roomID}&name_id={playerID}");
 
         ws.OnOpen += () =>
         {
@@ -68,6 +68,7 @@ public class NetworkManager : MonoBehaviour
             }
             else if (currentSceneName == "CharacterSelectScene")
             {
+                Debug.Log("シーンはあってるよ");
                 var charManager = FindObjectOfType<CharacterSelectManager>();
                 if (charManager != null)
                 {

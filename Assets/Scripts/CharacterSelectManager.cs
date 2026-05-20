@@ -28,7 +28,7 @@ public class CharacterSelectManager : MonoBehaviour
     {
         int myIndex = 0;
 
-        // 1P（Index 0）は 0番のキャラ、2P（Index 1）は 1番のキャラを初期位置にする
+        // 1Pは 0番のキャラ、2Pは 1番のキャラを初期位置にする
         if (NetworkManager.Instance != null)
         {
             myIndex = NetworkManager.Instance.myPlayerIndex;
@@ -65,7 +65,7 @@ public class CharacterSelectManager : MonoBehaviour
 
     void Update()
     {
-        // 既に決定（確定）しているなら、もうカーソル移動キーは受け付けない
+        // 既に決定しているなら、もうカーソル移動キーは受け付けない
         if (isMySelectionConfirmed) return;
 
         bool isMoved = false;
@@ -113,20 +113,21 @@ public class CharacterSelectManager : MonoBehaviour
 
         // 親クラス（InitResponse）から受け継いだ大事な変数もすべて確実にセット！
         msgData.type = "char_select";
-        msgData.name_id = NetworkManager.Instance.myPlayerId;
-        msgData.room_id = NetworkManager.Instance.myRoomID;     // 👈 これが抜けてたから届かなかった！
-        msgData.index = NetworkManager.Instance.myPlayerIndex;   // 👈 これも大事！
+        msgData.name_id = NetworkManager.Instance.myPlayerId;   
+        msgData.room_id = NetworkManager.Instance.myRoomID;     
+        msgData.index = NetworkManager.Instance.myPlayerIndex;   
         msgData.IsStarted = false;
 
         // 子クラス（CharSelectData）の固有メンバー
         msgData.char_index = index;
         msgData.is_ready = isReady;
 
+        Debug.Log($"'{msgData.char_index}'");
         string jsonMsg = JsonUtility.ToJson(msgData);
         await NetworkManager.Instance.SendMessageAsync(jsonMsg);
     }
 
-    // キャラクターが確定した時の処理（決定キーを押したとき）
+    // キャラクターが確定した時の処理
     void SelectCharacter(int index)
     {
         if (isMySelectionConfirmed) return;
@@ -142,14 +143,15 @@ public class CharacterSelectManager : MonoBehaviour
         CheckBothPlayersReady();
     }
 
-    // 外部（NetworkManager）からデータを受け取る部分
+    // NetworkManagerからデータを受け取る部分
     public void HandleRemoteMessage(string msg)
     {
         var playerData = JsonUtility.FromJson<CharSelectData>(msg);
-        if (playerData == null) return;
+        if (playerData == null) return; Debug.Log("何も入ってないよ");
 
         if (playerData.type == "char_select")
         {
+            Debug.Log("typeはあってる");
             // 相手からのデータの場合のみ処理
             if (playerData.name_id != NetworkManager.Instance.myPlayerId)
             {
@@ -168,6 +170,12 @@ public class CharacterSelectManager : MonoBehaviour
                     CheckBothPlayersReady();
                 }
             }
+        }
+
+        else
+        {
+           
+            Debug.Log($"typeが違うよ。期待値: char_select ➔ 実際の値: '{playerData.type}'");
         }
     }
 
