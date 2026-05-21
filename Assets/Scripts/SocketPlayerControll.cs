@@ -7,14 +7,14 @@ public class SocketPlayerController : MonoBehaviour
     [SerializeField] float moveSpeed = 5.0f;
 
     PlayerManager pm;
-    TopViewClient client;
+    NetworkManager client;
     async Task SendPlayerData(Vector3 pos)
     {
         if (client.ws.State == WebSocketState.Open)
         {
-            var playerData = new PlayerData
+            var playerData = new InGameMoveData
             {
-                id = pm.myPlayerId,
+                name_id = pm.myPlayerId,
                 position_x = pos.x,
                 position_y = pos.y,
             };
@@ -52,7 +52,7 @@ public class SocketPlayerController : MonoBehaviour
     void Start()
     {
         pm = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
-        client = GameObject.Find("WebSocket").GetComponent<TopViewClient>();
+        client = GameObject.Find("WebSocket").GetComponent<NetworkManager>();
     }
 
     void Update()

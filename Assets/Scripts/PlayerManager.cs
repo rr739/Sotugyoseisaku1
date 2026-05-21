@@ -7,8 +7,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] GameObject playerPrefab; // プレイヤーを表すPrefab
     public Dictionary<string, GameObject> players = new Dictionary<string, GameObject>(); // プレイヤーの一覧
     public string myPlayerId; // 自分のプレイヤーID
+    public string myRoomID;
     public int myPlayerIndex;
-    public void CreatePlayer(string id, Vector3 pos, bool isLocal ,int index)
+    public void CreatePlayer(string id, Vector3 pos ,int index)
     {
         // プレイヤーオブジェクト生成
         var canvas = GameObject.Find("Canvas");
@@ -29,20 +30,20 @@ public class PlayerManager : MonoBehaviour
         // リスト追加
         players[id] = player;
     }
-    public void UpdatePlayer(PlayerData pd)
+    public void UpdatePlayer(InGameMoveData pd)
     {
         // 位置情報更新
-        var player = players[pd.id];
+        var player = players[pd.name_id];
         player.transform.position = new Vector3(pd.position_x, pd.position_y, 0);
     }
     public void HandleWebSocketMessage(string msg)
     {
-        var playerData = JsonUtility.FromJson<PlayerData>(msg);
+        var playerData = JsonUtility.FromJson<InGameMoveData>(msg);
 
-        if (!players.ContainsKey(playerData.id))
+        if (!players.ContainsKey(playerData.name_id))
         {
             // リストに存在しなければ登録
-            CreatePlayer(playerData.id, Vector3.zero, false,playerData.index);
+            CreatePlayer(playerData.name_id, Vector3.zero,playerData.index);
         }
         else
         {

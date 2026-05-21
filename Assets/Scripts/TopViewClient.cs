@@ -1,80 +1,156 @@
 using UnityEngine;
 using UnityEngine.UI;
-using WebSocket = NativeWebSocket.WebSocket;
-using System.Net.WebSockets;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class TopViewClient : MonoBehaviour
 {
-
-    [SerializeField] InputField inputRoomId;
     [SerializeField] InputField inputPlayerName;
-    PlayerManager pm;
-    public WebSocket ws;
+    [SerializeField] InputField inputRoomId;
+
+    public GameObject InputPanel;
+    public GameObject LobbyPanel;
+
+    public Text P1Text;
+    public Text P2Text;
+    public GameObject StartButton;
+
+    private string remotePlayer;
+
     void Start()
     {
-        pm = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
+        Init(true, false);
+        StartButton.SetActive(false);
+
+   
     }
 
-    void Update()
+    private void OnDestroy()
     {
-#if !UNITY_WEBGL || UNITY_EDITOR
-        if (ws != null)
-        {
-            ws.DispatchMessageQueue();
-        }
-#endif
+       
     }
-    void HandleMessage(string msg)
+
+    public void HandleMessage(string msg)
     {
+        // 共通のレスポンス構造をチェック
         var res = JsonUtility.FromJson<InitResponse>(msg);
 
         if (res.type == "init")
         {
-            // 自分のIDを保存
-            pm.myPlayerId = res.id;
-            pm.myPlayerIndex = res.index;
+           
+            // 自分の情報をNetworkManager側に保存してもらう
+            NetworkManager.Instance.myPlayerId = res.name_id;
+            NetworkManager.Instance.myRoomID = res.room_id;
+            NetworkManager.Instance.myPlayerIndex = res.index;
 
-            Debug.Log($"<color=cyan>【システム】接続完了。自分のID: {res.id}, 入室順: {res.index}</color>");
+            Debug.Log($"<color=cyan>【システム】接続完了。自分のID: {res.name_id}, 入室順: {res.index}</color>");
+            UpdateLobbyUI();
+           
+            return;
 
-            // プレイヤーの初期化
-            pm.CreatePlayer(res.id, Vector3.zero, true,res.index);
         }
         else
         {
-            pm.HandleWebSocketMessage(msg);
+            HandleWebSocketMessage(msg);
         }
+
+        
     }
-    
-    async void Connect(string roomID, string playerName)
-    {
-        ws = new WebSocket($"ws://10.22.8.82:8080/ws?room_id={roomID}&name={playerName}");
 
-        ws.OnOpen += () =>
-        {
-            print("接続成功");
-        };
-
-        ws.OnMessage += (bytes) =>
-        {
-            var msg = System.Text.Encoding.UTF8.GetString(bytes);
-            print("受信メッセージ：" + msg);
-            HandleMessage(msg);
-        };
-
-        await ws.Connect();
-    }
     public void PushJoinButton()
     {
-        var roomId = "room123";
-        var playerName = inputPlayerName.text;
+        var playerNameInput = inputPlayerName.text;
+        var roomIdInput = inputRoomId.text;
 
-        if (roomId == "" || playerName == "")
+        Debug.Log($"接続試行: Name={playerNameInput}, Room={roomIdInput}");
+
+        if (string.IsNullOrEmpty(roomIdInput) || string.IsNullOrEmpty(playerNameInput))
         {
             print("ルームID、プレイヤー名は必須です");
             return;
         }
 
-        Connect(roomId, playerName);
+        Init(false, true);
+
+        // 通信開始をNetworkManagerに依頼する
+        NetworkManager.Instance.Connect(playerNameInput, roomIdInput);
     }
 
+    public async void SendPlayerData()
+    {
+        var initResponse = new InitResponse
+        {
+            type = "lobby_to_char", 
+            name_id = NetworkManager.Instance.myPlayerId,
+            room_id = NetworkManager.Instance.myRoomID,
+            index = NetworkManager.Instance.myPlayerIndex,
+            IsStarted = true,       // 開始フラグ
+        };
+
+        var jsonMsg = JsonUtility.ToJson(initResponse);
+        // 送信処理もNetworkManagerにお願いする
+        await NetworkManager.Instance.SendMessageAsync(jsonMsg);
+        SceneManager.LoadScene("CharacterSelectScene");
+    }
+
+    private void Init(bool IP, bool LP)
+    {
+        InputPanel.SetActive(IP);
+        LobbyPanel.SetActive(LP);
+    }
+
+    private void UpdateLobbyUI()
+    {
+        int myIndex = NetworkManager.Instance.myPlayerIndex;
+        string myId = NetworkManager.Instance.myPlayerId;
+
+
+        if (myIndex == 0)
+        {
+            P1Text.text = myId;
+            P2Text.text = string.IsNullOrEmpty(remotePlayer) ? "待機中..." : remotePlayer;
+        }
+        else if (myIndex == 1)
+        {
+            P1Text.text = string.IsNullOrEmpty(remotePlayer) ? "待機中..." : remotePlayer;
+            P2Text.text = myId;
+        }
+
+        CheckStartButtonCondition();
+    }
+
+    private void HandleWebSocketMessage(string msg)
+    {
+        var playerData = JsonUtility.FromJson<InGameMoveData>(msg);
+
+        if (playerData.IsStarted)
+        {
+            // ここで次のシーンへ！NetworkManagerは生き残ります
+            SceneManager.LoadScene("CharacterSelectScene");
+            return;
+        }
+
+        if (playerData.name_id != NetworkManager.Instance.myPlayerId)
+        {
+            remotePlayer = playerData.name_id;
+            UpdateLobbyUI();
+        }
+      
+    }
+
+    private void CheckStartButtonCondition()
+    {
+        bool isP1Ready = !string.IsNullOrEmpty(P1Text.text) && P1Text.text != "待機中...";
+        bool isP2Ready = !string.IsNullOrEmpty(P2Text.text) && P2Text.text != "待機中...";
+
+        // 自分がホスト（Index 0）かつ、両方準備できたらボタン表示
+        if (NetworkManager.Instance.myPlayerIndex == 0 && isP1Ready && isP2Ready)
+        {
+            StartButton.SetActive(true);
+        }
+        else
+        {
+            StartButton.SetActive(false);
+        }
+    }
 }
