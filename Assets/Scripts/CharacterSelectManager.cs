@@ -185,8 +185,7 @@ public class CharacterSelectManager : MonoBehaviour
         {
             if (mySelectedChar != remoteSelectedChar)
             {
-                Debug.Log("お互い違うキャラが選ばれました！GameSceneへ遷移します。");
-                SceneManager.LoadScene("GameScene");
+                SceneManager.LoadScene("StageSelectScene");
             }
             else
             {
