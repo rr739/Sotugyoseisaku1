@@ -17,6 +17,13 @@ public class CharSelectData : InitResponse
 }
 
 [Serializable]
+public class StageSelectData : InitResponse
+{ 
+    public int stage_index;   // どこのステージを選んだのか
+    public bool stage_ready;  // ステージを選択したか？
+}
+
+[Serializable]
 public class InGameMoveData : InitResponse
 {
     

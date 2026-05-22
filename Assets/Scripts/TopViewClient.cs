@@ -49,12 +49,23 @@ public class TopViewClient : MonoBehaviour
             return;
 
         }
+        else if (res.type == "lobby_status")
+        {
+            // 自分以外のプレイヤーなら、対戦相手として名前を登録する
+            if (res.name_id != NetworkManager.Instance.myPlayerId)
+            {
+                remotePlayer = res.name_id;
+              
+                UpdateLobbyUI();
+            }
+            return;
+        }
         else
         {
             HandleWebSocketMessage(msg);
         }
 
-        
+
     }
 
     public void PushJoinButton()
@@ -88,7 +99,7 @@ public class TopViewClient : MonoBehaviour
         };
 
         var jsonMsg = JsonUtility.ToJson(initResponse);
-        // 送信処理もNetworkManagerにお願いする
+       
         await NetworkManager.Instance.SendMessageAsync(jsonMsg);
         SceneManager.LoadScene("CharacterSelectScene");
     }
@@ -127,6 +138,7 @@ public class TopViewClient : MonoBehaviour
         {
             // ここで次のシーンへ！NetworkManagerは生き残ります
             SceneManager.LoadScene("CharacterSelectScene");
+            UIInit();
             return;
         }
 
@@ -152,5 +164,35 @@ public class TopViewClient : MonoBehaviour
         {
             StartButton.SetActive(false);
         }
+    }
+
+    public async void DeleteDataButton()
+    {
+        if (NetworkManager.Instance.ws != null)
+        {
+            Debug.Log("サーバー接続を切断中...");
+            await NetworkManager.Instance.ws.Close();
+            Debug.Log("サーバー接続完了");
+
+        }
+
+        NetworkManager.Instance.DeleteData();
+
+        UIInit();
+        
+    }
+
+    private void UIInit()
+    {
+        if (inputPlayerName != null) inputPlayerName.text = string.Empty;
+        if (inputRoomId != null) inputRoomId.text = string.Empty;
+
+        remotePlayer = string.Empty;
+
+        P1Text.text = string.Empty;
+        P2Text.text = string.Empty;
+        StartButton.SetActive(false);
+
+        Init(true, false);
     }
 }

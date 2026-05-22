@@ -92,7 +92,7 @@ public class NetworkManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("WebSocketが接続されていないため、送信できませんでした。");
+            Debug.LogWarning("接続切断");
         }
     }
 
@@ -101,6 +101,20 @@ public class NetworkManager : MonoBehaviour
         if (ws != null)
         {
             await ws.Close();
+            DeleteData();
         }
+    }
+
+    public void DeleteData()
+    {
+        ws = null;
+
+        myPlayerId = string.Empty;
+        myRoomID = string.Empty;
+
+        myPlayerIndex = -1;
+
+     
+
     }
 }
