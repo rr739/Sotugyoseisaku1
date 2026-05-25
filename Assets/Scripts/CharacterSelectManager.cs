@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -35,7 +36,13 @@ public class CharacterSelectManager : MonoBehaviour
 
             // 自分の番号を表示
             if (myInfoText != null)
-                myInfoText.text = (myIndex == 0) ? "1P " : "2P";
+            {
+                if (myIndex == 0) myInfoText.text = "1P";
+                if (myIndex == 1) myInfoText.text = "2P";
+                return;
+            }
+
+           // myInfoText.text = (myIndex == 0) ? "1P " : "2P";
 
             if (myIndex == 1 && characterIcons.Length > 1) currentSelectIndex = 1;
 
@@ -44,8 +51,10 @@ public class CharacterSelectManager : MonoBehaviour
         //  相手のテキストの初期表示を設定（自分が1Pなら相手は2P、自分が2Pなら相手は1P）
         if (otherInfoText != null)
         {
-            int remoteIndex = (myIndex == 0) ? 2 : 1;
-            otherInfoText.text = $"{remoteIndex}P";
+            if (myIndex == 0) otherInfoText.text = "2P";
+            if (myIndex == 1) otherInfoText.text = "1P";
+            /*int remoteIndex = (myIndex == 0) ? 2 : 1;
+            otherInfoText.text = $"{remoteIndex}P";*/
         }
 
         UpdateCursorPosition();
