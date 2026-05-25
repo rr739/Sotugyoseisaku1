@@ -100,12 +100,39 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision) => CheckContact(collision, false);
 
     // 衝突している相手が床か箱かを確認し、状態を更新する
+    // 衝突している相手が床か箱かを確認し、状態を更新する
     private void CheckContact(Collision2D collision, bool state)
     {
         int layer = collision.gameObject.layer;
 
-        // ビット演算を使用してレイヤーが一致するかチェック（マジックナンバー回避）
-        if (((1 << layer) & groundLayer) != 0) isGrounded = state;
-        if (((1 << layer) & pushableLayer) != 0) isPushing = state;
+        // ビット演算を使用してレイヤーが一致するかチェック
+        bool isGroundLayer = ((1 << layer) & groundLayer) != 0;
+        bool isPushableLayer = ((1 << layer) & pushableLayer) != 0;
+
+        if (isGroundLayer)
+        {
+            if (state) // 接触した（Enter）とき
+            {
+                // 衝突した面（接点）の向きを確認する
+                foreach (ContactPoint2D contact in collision.contacts)
+                {
+                    // normal.y が 0.7 以上のとき「上を向いている面（＝床）」と判定する
+                    // （真上なら 1.0、45度の坂道なら約 0.707）
+                    float minGroundAngleY = 0.7f;
+
+                    if (contact.normal.y >= minGroundAngleY)
+                    {
+                        isGrounded = true;
+                        break; // 床が見つかったのでループを抜ける
+                    }
+                }
+            }
+            else // 離れた（Exit）とき
+            {
+                isGrounded = false;
+            }
+        }
+
+        if (isPushableLayer) isPushing = state;
     }
 }
