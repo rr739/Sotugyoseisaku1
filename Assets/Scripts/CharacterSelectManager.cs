@@ -94,6 +94,8 @@ public class CharacterSelectManager : MonoBehaviour
 
           
         }
+
+        SendCharacterState(currentSelectIndex, false);
     }
 
     void Update()

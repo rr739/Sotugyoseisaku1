@@ -20,7 +20,7 @@ public class CharSelectData : InitResponse
 public class StageSelectData : InitResponse
 { 
     public int stage_index;   // どこのステージを選んだのか
-    public bool stage_ready;  // ステージを選択したか？
+    public bool stage_ready;  // 確定ボタンを押したかどうか？
 }
 
 [Serializable]
