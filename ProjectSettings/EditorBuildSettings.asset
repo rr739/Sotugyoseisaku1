@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Resources/Scenes/TutorialScene.unity
     guid: 846e6e026145d8946a5c446ca34d0654
   - enabled: 1
+    path: Assets/Resources/Scenes/StageSelectScene.unity
+    guid: f1fbf3e6e426f2a4aa868448db04adc2
+  - enabled: 1
     path: Assets/Resources/Scenes/GameScene.unity
     guid: 8912dc925db0b414ea63efc0cf69959f
   m_configObjects: {}
