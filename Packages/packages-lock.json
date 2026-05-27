@@ -1,5 +1,8 @@
 {
   "dependencies": {
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
     "com.endel.nativewebsocket": {
       "version": "https://github.com/endel/NativeWebSocket.git#upm",
       "depth": 0,
@@ -277,6 +280,9 @@
       "dependencies": {},
       "hash": "610157ad762084380380148ba8ce14e266a6da97"
     },
+>>>>>>> player
+=======
+>>>>>>> 94d96961e8ad6a135fbeaca406930135c50bac0d
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
