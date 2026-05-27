@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UI; // ★標準のTextを使うためにこの行が必要です（残しておきます）
 using UnityEngine.SceneManagement;
+// using TMPro; // ★【削除またはコメントアウト】TMPは使わないので消してOKです
 
 public class StageMenuManager : MonoBehaviour
 {
@@ -8,11 +9,14 @@ public class StageMenuManager : MonoBehaviour
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject confirmationPanel;
 
-    [Header("【追加】画面左上のメニューボタン")]
-    [SerializeField] private Button menuOpenButton; // ★ここに左上のMenuボタンを登録します
+    [Header("【追加】メニューを開くためのボタン")]
+    [SerializeField] private Button menuOpenButton;
 
     [Header("退出確認用のUI要素")]
     [SerializeField] private Button exitButton;
+    [SerializeField] private Button yesButton;
+
+    // ★【修正】「TextMeshProUGUI」から「Text」に書き戻します
     [SerializeField] private Text yesButtonText;
 
     [Header("ステージ選択画面のシーン名")]
@@ -23,18 +27,13 @@ public class StageMenuManager : MonoBehaviour
 
     private void Start()
     {
-        // ゲーム開始時はすべてのパネルを非表示にする
         if (menuPanel != null) menuPanel.SetActive(false);
         if (confirmationPanel != null) confirmationPanel.SetActive(false);
-
-        // ゲーム開始時は時間を正常に動かし、メニューボタンも押せる状態にする
-        Time.timeScale = 1f;
-        if (menuOpenButton != null) menuOpenButton.interactable = true;
+        if (menuOpenButton != null) menuOpenButton.Select();
     }
 
     private void Update()
     {
-        // メニューの開閉は、キーボードの「Escapeキー」か「コントローラーの特定のメニューボタン」のみに限定
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Cancel"))
         {
             if (confirmationPanel.activeSelf) CancelExit();
@@ -49,75 +48,45 @@ public class StageMenuManager : MonoBehaviour
 
         if (isMenuOpen)
         {
-            // メニューが開いたので、ゲームの時間を完全に停止させる
-            Time.timeScale = 0f;
-            Debug.Log("ゲームを一時停止しました。");
-
-            // ★【ここを追加】パネルが出ている間は、左上のメニューボタンをクリックできないようにする
-            if (menuOpenButton != null)
-            {
-                menuOpenButton.interactable = false;
-            }
+            if (exitButton != null) exitButton.Select();
         }
         else
         {
-            // メニューが閉じられたので、ゲームの時間を通常通りに動かす
-            Time.timeScale = 1f;
-            Debug.Log("ゲームを再開しました。");
-
-            // ★【ここを追加】メニューが閉じたら、再び左上のメニューボタンをクリックできるようにする
-            if (menuOpenButton != null)
-            {
-                menuOpenButton.interactable = true;
-            }
+            if (menuOpenButton != null) menuOpenButton.Select();
         }
     }
 
-    // ⑦ステージ退出ボタンを押したとき
     public void OpenConfirmation()
     {
         confirmationPanel.SetActive(true);
         readyPlayersCount = 0;
         UpdateYesButtonText();
+        if (yesButton != null) yesButton.Select();
     }
 
-    // ⑧「はい」ボタンがクリックされたとき
-    public void PressYesByClick()
+    public void PressYes()
     {
         readyPlayersCount++;
         UpdateYesButtonText();
-
         if (readyPlayersCount >= 2)
         {
-            Debug.Log("2回のクリックを確認。ステージ変更します。");
-
-            // 次のシーンに行く前に、必ず時間を「1」に戻す
-            Time.timeScale = 1f;
-
             SceneManager.LoadScene(stageSelectSceneName);
         }
     }
 
-    // ⑧「いいえ」ボタンがクリックされたとき、またはEscキーでのリセット
     public void CancelExit()
     {
-        confirmationPanel.SetActive(false);
         readyPlayersCount = 0;
-
-        // ★確認画面で「いいえ」を押して、通常のメニュー画面（③）に戻る場合も、
-        // まだメニューのパネル自体は開いている状態なので、メニューボタンは押せない状態（false）を維持します
+        confirmationPanel.SetActive(false);
+        if (exitButton != null) exitButton.Select();
     }
 
     private void UpdateYesButtonText()
     {
         if (yesButtonText != null)
         {
+            // ★中身の処理はそのままで、標準Textに対応します
             yesButtonText.text = $"はい {readyPlayersCount}/2";
         }
-    }
-
-    private void OnDestroy()
-    {
-        Time.timeScale = 1f;
     }
 }

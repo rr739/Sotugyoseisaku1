@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
@@ -41,17 +40,8 @@ public class PlayerController : MonoBehaviour
         // ジャンプ：ボタンが押された瞬間 且つ 地面にいる時
         if (Input.GetButtonDown(jumpButton) && isGrounded) Jump();
 
-        // 攻撃：ボタンが押された瞬間
-        if (Input.GetButtonDown(fireButton))
-        {
-            // ★【ここを追加】もし今、マウスがUI（メニューボタンや「はい」ボタン）の上にあるなら、射撃をスルーする
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-            {
-                return;
-            }
-
-            Shoot();
-        }
+        // 攻撃：ボタンが押された瞬間（GetButtonDownなので長押しでの連射を防止）
+        if (Input.GetButtonDown(fireButton)) Shoot();
     }
 
     private void Move()
