@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Xml.Linq;
+using Unity.Properties;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -24,43 +27,75 @@ public class CharacterSelectManager : MonoBehaviour
     public Text myInfoText;
     public Text otherInfoText;
 
+    private string remoteplayer;
     void Start()
     {
         int myIndex = 0;
+        var myName = "";
 
         // 1Pは 0番のキャラ、2Pは 1番のキャラを初期位置にする
         if (NetworkManager.Instance != null)
         {
             myIndex = NetworkManager.Instance.myPlayerIndex;
+            myName = NetworkManager.Instance.myPlayerId;
 
+           
             // 自分の番号を表示
-            if (myInfoText != null)
-                myInfoText.text = (myIndex == 0) ? "1P " : "2P";
+            if (myInfoText != null && otherInfoText != null)
+            {
+                if (myIndex == 0)
+                {
+                    myInfoText.text = myName;
+                    otherInfoText.text = "";
+                }
+                else if (myIndex == 1)
+                {
+                    myInfoText.text = "";
+                    otherInfoText.text = myName;
+                }           
+                    
 
-            if (myIndex == 1 && characterIcons.Length > 1) currentSelectIndex = 1;
 
+            }
             
-        }
-        //  相手のテキストの初期表示を設定（自分が1Pなら相手は2P、自分が2Pなら相手は1P）
-        if (otherInfoText != null)
-        {
-            int remoteIndex = (myIndex == 0) ? 2 : 1;
-            otherInfoText.text = $"{remoteIndex}P";
+            if (myIndex == 1)
+            {
+
+                RectTransform temp = selectionCursor;
+                selectionCursor = remoteSelectionCursor;
+                remoteSelectionCursor = temp;
+
+                // 2Pの初期位置を1番にする
+                currentSelectIndex = 1;
+            }
+            else
+            {
+                // 1Pの初期位置は0番
+                currentSelectIndex = 0;
+            }
+
+
+
         }
 
+        
         UpdateCursorPosition();
 
         //  初期状態から相手のカーソルを見せるために最初からTrueにする、またはSetActiveを制御
         if (remoteSelectionCursor != null)
         {
             remoteSelectionCursor.gameObject.SetActive(true); // 常に表示
-            // 相手の初期位置（1Pなら1、2Pなら0など）に適当に置いておく
-            int remoteDefault = (NetworkManager.Instance != null && NetworkManager.Instance.myPlayerIndex == 0) ? 1 : 0;
+        
+            int remoteDefault = (myIndex == 0) ? 1 : 0;
             if (characterIcons.Length > remoteDefault)
             {
                 remoteSelectionCursor.position = characterIcons[remoteDefault].position;
             }
+
+          
         }
+
+        SendCharacterState(currentSelectIndex, false);
     }
 
     void Update()
@@ -160,6 +195,21 @@ public class CharacterSelectManager : MonoBehaviour
                 {
                     remoteSelectionCursor.gameObject.SetActive(true);
                     remoteSelectionCursor.position = characterIcons[playerData.char_index].position;
+                   
+                    remoteplayer = playerData.name_id;
+
+                    int myIndex = NetworkManager.Instance.myPlayerIndex;
+
+                    if (myIndex == 0)
+                    {
+                       
+                        otherInfoText.text = remoteplayer;
+                    }
+                    else if (myIndex == 1)
+                    {
+                        myInfoText.text = remoteplayer;
+                      
+                    }
                 }
 
                 //  相手が「決定（is_ready == true）」した時だけ、選択番号を確定させる
