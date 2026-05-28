@@ -612,8 +612,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -531, y: -72.83499}
-  m_SizeDelta: {x: 356.37, y: 145.66998}
+  m_AnchoredPosition: {x: -478.07, y: -72.83499}
+  m_SizeDelta: {x: 462.23, y: 145.67}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &201536000
 MonoBehaviour:
@@ -648,7 +648,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ID
+  m_Text: RoomID
 --- !u!222 &201536001
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2128,8 +2128,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -531, y: 261.92}
-  m_SizeDelta: {x: 356.37, y: 145.66998}
+  m_AnchoredPosition: {x: -375.7, y: 261.92}
+  m_SizeDelta: {x: 666.98, y: 145.67}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1604147325
 MonoBehaviour:
@@ -2164,7 +2164,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Name
+  m_Text: PlayerName
 --- !u!222 &1604147326
 CanvasRenderer:
   m_ObjectHideFlags: 0
