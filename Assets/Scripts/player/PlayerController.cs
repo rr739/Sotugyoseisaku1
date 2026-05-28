@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("射撃（クールタイム）設定")]
     [SerializeField] private float fireRate = 0.3f; // 次の弾を撃つまでに必要な待機時間（秒）
-    private float nextFireTime = 0f;               // 次に発射が可能になる時刻の記録用
+    private float nextFireTime = 0f;                // 次に発射が可能になる時刻の記録用
 
     [Header("インプット設定（InputManagerの名前）")]
     [SerializeField] private string horizontalAxis = "Horizontal1"; // 左右移動に使用する軸の名前
@@ -24,17 +24,28 @@ public class PlayerController : MonoBehaviour
 
     [Header("各種参照設定")]
     [SerializeField] private GameObject projectilePrefab; // 発射する弾のプレハブ
-    [SerializeField] private Transform firePoint;         // 弾が生成（出現）するポイント
+    [SerializeField] private Transform firePoint;          // 弾が生成（出現）するポイント
     [SerializeField] private LayerMask groundLayer;       // 地面判定を行う対象レイヤー
     [SerializeField] private LayerMask pushableLayer;     // 押し出し可能なオブジェクトのレイヤー
+
+    // ★【追加】外部（GoalAreaなど）から動けるかどうかを切り替えるためのプロパティ
+    public bool CanMove { get; set; } = true;
 
     private Rigidbody2D rb;
     private bool isGrounded; // 現在、地面に接地しているかどうかのフラグ
     private bool isPushing;  // 現在、押し出し対象に接触しているかどうかのフラグ
+
     void Awake() => rb = GetComponent<Rigidbody2D>();
 
     void Update()
     {
+        // ★【追加】もし「動けない状態（ゴール到達時など）」なら、強制的に横移動を止めて以降の入力を全遮断
+        if (!CanMove)
+        {
+            rb.velocity = new Vector2(0f, rb.velocity.y); // y軸の物理（落下など）は維持しつつ、横移動を0にする
+            return; // ここで処理を終了するため、ジャンプも射撃もできなくなります
+        }
+
         // 毎フレーム移動処理を呼び出し
         Move();
 
@@ -44,7 +55,7 @@ public class PlayerController : MonoBehaviour
         // 攻撃：ボタンが押された瞬間
         if (Input.GetButtonDown(fireButton))
         {
-            // ★【ここを追加】もし今、マウスがUI（メニューボタンや「はい」ボタン）の上にあるなら、射撃をスルーする
+            // もし今、マウスがUI（メニューボタンや「はい」ボタン）の上にあるなら、射撃をスルーする
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             {
                 return;
@@ -109,7 +120,6 @@ public class PlayerController : MonoBehaviour
     // 衝突終了時の判定
     private void OnCollisionExit2D(Collision2D collision) => CheckContact(collision, false);
 
-    // 衝突している相手が床か箱かを確認し、状態を更新する
     // 衝突している相手が床か箱かを確認し、状態を更新する
     private void CheckContact(Collision2D collision, bool state)
     {
