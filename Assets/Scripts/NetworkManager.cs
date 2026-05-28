@@ -42,7 +42,9 @@ public class NetworkManager : MonoBehaviour
         myPlayerId = playerID;
         myRoomID = roomID;
 
-        ws = new WebSocket($"ws://10.22.5.7:8080/ws?room_id={roomID}&name_id={playerID}");
+
+        ws = new WebSocket($"ws://10.22.1.234:8080/ws?room_id={roomID}&name_id={playerID}");
+
 
         ws.OnOpen += () =>
         {
@@ -68,7 +70,7 @@ public class NetworkManager : MonoBehaviour
             }
             else if (currentSceneName == "CharacterSelectScene")
             {
-                Debug.Log("シーンはあってるよ");
+              
                 var charManager = FindObjectOfType<CharacterSelectManager>();
                 if (charManager != null)
                 {
@@ -78,6 +80,14 @@ public class NetworkManager : MonoBehaviour
             else if (currentSceneName == "GameScene")
             {
                 
+            }
+            else if (currentSceneName == "StageSelectScene")
+            {
+                var stageManager = FindObjectOfType<StageManager>();
+                if (stageManager != null)
+                {
+                    stageManager.HandleRemoteStageMessage(msg); 
+                }
             }
         };
 
@@ -92,7 +102,7 @@ public class NetworkManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("WebSocketが接続されていないため、送信できませんでした。");
+            Debug.LogWarning("接続切断");
         }
     }
 
@@ -101,6 +111,20 @@ public class NetworkManager : MonoBehaviour
         if (ws != null)
         {
             await ws.Close();
+            DeleteData();
         }
+    }
+
+    public void DeleteData()
+    {
+        ws = null;
+
+        myPlayerId = string.Empty;
+        myRoomID = string.Empty;
+
+        myPlayerIndex = -1;
+
+     
+
     }
 }

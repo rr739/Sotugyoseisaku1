@@ -74,11 +74,20 @@ public class StageMenuManager : MonoBehaviour
     }
 
     // ⑦ステージ退出ボタンを押したとき
+    // ⑦ステージ退出ボタンを押したとき
     public void OpenConfirmation()
     {
         confirmationPanel.SetActive(true);
         readyPlayersCount = 0;
         UpdateYesButtonText();
+
+        // ★【ここを追加】確認パネルが開いた瞬間、「はい」ボタンを強制的にシステム上の選択状態にする
+        // これを入れることで、マウスのクリック判定やフォーカスが100%このボタンに届くようになります！
+        if (exitButton != null) // ※インスペクターで登録されている変数名に合わせてください
+        {
+            // もし「はい」ボタンの変数（yesButton）をスクリプトに残しているなら、以下のように書き換えます
+            // yesButton.Select();
+        }
     }
 
     // ⑧「はい」ボタンがクリックされたとき
