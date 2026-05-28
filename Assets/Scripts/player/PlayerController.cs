@@ -26,7 +26,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab; // 発射する弾のプレハブ
     [SerializeField] private Transform firePoint;         // 弾が生成（出現）するポイント
     [SerializeField] private LayerMask groundLayer;       // 地面判定を行う対象レイヤー
-    [SerializeField] private LayerMask pushableLayer;     // 押し出し可能なオブジェクトのレイヤー
+    [SerializeField] private LayerMask pushableLayer;     // 押し出し可能なオブジェクトのレイヤー[
+
+    public bool CanMove { get; set; } = true;
 
     private Rigidbody2D rb;
     private bool isGrounded; // 現在、地面に接地しているかどうかのフラグ

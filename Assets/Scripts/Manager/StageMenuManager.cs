@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class StageMenuManager : MonoBehaviour
 {
+    public static StageMenuManager Instance { get; private set; }
+
     [Header("UIパネルの設定")]
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject confirmationPanel;
@@ -15,11 +17,29 @@ public class StageMenuManager : MonoBehaviour
     [SerializeField] private Button exitButton;
     [SerializeField] private Text yesButtonText;
 
+    [Header("【変更】左上のスターUIの親オブジェクト")]
+    [SerializeField] private Transform starUIPanel; // ★アイコンたちが並ぶ土台の枠（Container）
+
+    [Header("【追加】生成するスターアイコンのプレハブ")]
+    [SerializeField] private GameObject starIconPrefab; // ★星の画像（Image）単体のプレハブ
+
     [Header("ステージ選択画面のシーン名")]
     [SerializeField] private string stageSelectSceneName = "StageSelect";
 
     private int readyPlayersCount = 0;
     private bool isMenuOpen = false;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -107,6 +127,8 @@ public class StageMenuManager : MonoBehaviour
         }
     }
 
+
+
     // ⑧「いいえ」ボタンがクリックされたとき、またはEscキーでのリセット
     public void CancelExit()
     {
@@ -115,6 +137,17 @@ public class StageMenuManager : MonoBehaviour
 
         // ★確認画面で「いいえ」を押して、通常のメニュー画面（③）に戻る場合も、
         // まだメニューのパネル自体は開いている状態なので、メニューボタンは押せない状態（false）を維持します
+    }
+
+
+    public void AddStar()
+    {
+        if (starUIPanel == null || starIconPrefab == null) return;
+
+        // 【テキストなし】星のアイコン画像を新しく生成し、土台（Panel）の中に子オブジェクトとして追加する
+        Instantiate(starIconPrefab, starUIPanel);
+
+        Debug.Log("スターアイコンを左上に追加しました。");
     }
 
     private void UpdateYesButtonText()
