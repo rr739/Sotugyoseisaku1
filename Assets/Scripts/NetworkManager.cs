@@ -45,7 +45,6 @@ public class NetworkManager : MonoBehaviour
 
         ws = new WebSocket($"ws://10.22.1.234:8080/ws?room_id={roomID}&name_id={playerID}");
 
-        
 
         ws.OnOpen += () =>
         {
