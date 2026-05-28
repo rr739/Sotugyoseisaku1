@@ -123,7 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
-<<<<<<< HEAD
 --- !u!1 &5968821
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,11 +407,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7035981683803161156, guid: 34b52b810d553624a9d96e0f1fdb5b61, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.43
+      value: -8.51
       objectReference: {fileID: 0}
     - target: {fileID: 7035981683803161156, guid: 34b52b810d553624a9d96e0f1fdb5b61, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.66
+      value: -3.9
       objectReference: {fileID: 0}
     - target: {fileID: 7035981683803161156, guid: 34b52b810d553624a9d96e0f1fdb5b61, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3145,6 +3144,63 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1001 &1657702058
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 172164606897759493, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 172164606897759493, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 172164606897759493, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 172164606897759493, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 172164606897759493, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 172164606897759493, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 172164606897759493, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 172164606897759493, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 172164606897759493, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 172164606897759493, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6452149468633875155, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
+      propertyPath: m_Name
+      value: StarItem (3)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
 --- !u!1 &1816984151
 GameObject:
   m_ObjectHideFlags: 0
@@ -4140,9 +4196,33 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f52f19b0a6387d44aa4db1116d988c5, type: 3}
-=======
->>>>>>> origin/WR_new
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
-  m_Roots: []
+  m_Roots:
+  - {fileID: 1990170771}
+  - {fileID: 492797141}
+  - {fileID: 751722762}
+  - {fileID: 1358549300}
+  - {fileID: 1294415096}
+  - {fileID: 1120438883}
+  - {fileID: 1338646963}
+  - {fileID: 381948368}
+  - {fileID: 1816984154}
+  - {fileID: 334930259}
+  - {fileID: 1937206136}
+  - {fileID: 1274638758}
+  - {fileID: 1914149365}
+  - {fileID: 713142310}
+  - {fileID: 710050661}
+  - {fileID: 2086722325}
+  - {fileID: 5968823}
+  - {fileID: 1954479168}
+  - {fileID: 1491732165}
+  - {fileID: 2104162364}
+  - {fileID: 1955596327}
+  - {fileID: 4455000958686081630}
+  - {fileID: 8960110365654605507}
+  - {fileID: 440419698}
+  - {fileID: 351746285}
+  - {fileID: 1657702058}

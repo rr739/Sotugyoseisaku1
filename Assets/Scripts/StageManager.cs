@@ -118,7 +118,7 @@ public class StageManager : MonoBehaviour
     {
         if (stageIndex == 0)
         {
-            SceneManager.LoadScene("TutorialScene");
+            SceneManager.LoadScene("TutorialStageScene");
         }
         else if (stageIndex == 1)
         {
