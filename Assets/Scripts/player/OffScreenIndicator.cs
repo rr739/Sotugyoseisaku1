@@ -31,7 +31,12 @@ public class OffScreenIndicator : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (targetPlayer == null || indicatorIcon == null || mainCamera == null) return;
+        // ★【安全対策】プレイヤーやアイコンが消滅、または非アクティブならUIを非表示にして何もしない
+        if (targetPlayer == null || !targetPlayer.gameObject.activeInHierarchy || indicatorIcon == null || mainCamera == null)
+        {
+            if (indicatorIcon != null) indicatorIcon.gameObject.SetActive(false);
+            return;
+        }
 
         // ターゲットのワールド座標をスクリーン座標に変換
         Vector3 screenPos = mainCamera.WorldToScreenPoint(targetPlayer.position);
