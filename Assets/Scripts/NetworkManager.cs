@@ -12,6 +12,7 @@ public class NetworkManager : MonoBehaviour
     public string myPlayerId;
     public string myRoomID;
     public int myPlayerIndex;
+    public int myCharaIndex;
 
     void Start()
     {
