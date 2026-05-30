@@ -16,7 +16,7 @@ public class ObjectOnlineCommunication : MonoBehaviour
         int charaindex = 0;
 
 
-        // 1Pは 0番のキャラ、2Pは 1番のキャラを初期位置にする
+        // 自分自身のキャラを生成
         if (NetworkManager.Instance != null)
         {
             charaindex = NetworkManager.Instance.myCharaIndex;
