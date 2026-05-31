@@ -26,7 +26,8 @@ public class StageSelectData : InitResponse
 [Serializable]
 public class InGameMoveData : InitResponse
 {
-    
+    public string dataType;   
+    public int id;
     public float position_x;   // Xç¿ïW
     public float position_y;   // Yç¿ïW
 
