@@ -6,64 +6,110 @@ using UnityEngine.SocialPlatforms;
 
 public class ObjectOnlineCommunication : MonoBehaviour
 {
-    [SerializeField] GameObject playerPrefab; // プレイヤーを表すPrefab
+    [SerializeField] GameObject[] playersPrefab; // プレイヤーを表すPrefab
     public Dictionary<int, GameObject> players = new Dictionary<int, GameObject>(); // プレイヤーの一覧
     public string myPlayerId; // 自分のプレイヤーID
+
+    /*[SerializeField] GameObject boxPrefab; // 動かしたい箱のPrefabなど
+    private Dictionary<int, GameObject> stageObjects = new Dictionary<int, GameObject>();*/
 
     // プレイヤーが炎か氷かを取得
     void Start()
     {
-        int charaindex = 0;
 
 
-        // 1Pは 0番のキャラ、2Pは 1番のキャラを初期位置にする
+        /*// 自分自身のキャラを生成
         if (NetworkManager.Instance != null)
         {
-            charaindex = NetworkManager.Instance.myCharaIndex;
+            int myId = NetworkManager.Instance.myCharaIndex; 
+            int myCharaIndex = NetworkManager.Instance.myCharaIndex; 
 
-            CreatePlayer(charaindex, Vector3.zero, true);
+            // 固有IDと、キャラの種類を別々で渡す
+            CreatePlayer(myId, myCharaIndex, Vector3.zero, true);
+        }*/
+
+        if (NetworkManager.Instance != null)
+        {
+            int myCharaIndex = NetworkManager.Instance.myCharaIndex; // 0か1
+
+            //  まず自分を生成 (初期位置は Vector3.zero などを適切な開始位置に)
+            CreatePlayer(myCharaIndex, Vector3.zero, true);
+            Debug.Log($"【初期化】自分のキャラ（{myCharaIndex}番）を生成しました。");
+
+            // 相手のキャラも最初からシーンに配置しておく！
+            // 自分が 0(炎) なら 相手は 1(氷) / 自分が 1(氷) なら 相手は 0(炎)
+            int opponentCharaIndex = (myCharaIndex == 0) ? 1 : 0;
+
+            // 相手の初期位置
+            Vector3 opponentStartPos = new Vector3(2f, 0f, 0f);
+
+            CreatePlayer(opponentCharaIndex, opponentStartPos, false);
+            Debug.Log($"【初期化】相手のキャラ（{opponentCharaIndex}番）をあらかじめ生成しました。");
         }
     }
 
     public void CreatePlayer(int charaindex, Vector3 pos, bool isLocal)
     {
-        // プレイヤーオブジェクト生成
-        var canvas = GameObject.Find("Canvas");
 
+        // 生成するPrefabを選ぶために charaindex を使う
+        var player = Instantiate(playersPrefab[charaindex], pos, Quaternion.identity);
 
-
-
-        var player = Instantiate(playerPrefab, pos, Quaternion.identity, canvas.transform);
-
-
-        // リスト追加
+        // Dictionaryには 0 または 1 をKeyにして保存する
         players[charaindex] = player;
-    }
 
-    public void UpdatePlayer(InitResponse pd)
-    {
-        // 位置情報更新
-        /*var player = players[pd.id];
-        player.transform.position = new Vector3(pd.position_x, pd.position_y, 0);*/
-    }
-
-    public void HandleWebSocketMessage(string msg)
-    { 
-        var playerData = JsonUtility.FromJson<CharSelectData>(msg);
-
-
-        
-
-        if (!players.ContainsKey(playerData.char_index))
+        /*var controller = player.GetComponent<PlayerController>();
+        if (controller != null)
         {
-            // リストに存在しなければ登録
-            CreatePlayer(playerData.char_index, Vector3.zero, false);
+            controller.isLocalPlayer = isLocal;
+        }*/
+    }
+    public void HandleWebSocketMessage(string msg)
+    {
+        var data = JsonUtility.FromJson<InGameMoveData>(msg);
+
+        if (data.dataType == "player")
+        {
+            HandlePlayerSync(data);
+        }
+        else if (data.dataType == "object")
+        {
+            //HandleObjectSync(data);
+        }
+    }
+
+    
+
+    private void HandlePlayerSync(InGameMoveData data)
+    {
+        // 【デバッグログ】何番のIDが送られてきているかコンソールで確認する
+        Debug.Log($"受信したプレイヤーID: {data.id} / 自分のインデックス: {NetworkManager.Instance.myCharaIndex}");
+
+        // 一番最初に自分かどうかをチェックする（まだ生成してない場合も含めて無視する）
+        if (data.id == NetworkManager.Instance.myCharaIndex) return;
+
+        Vector3 targetPos = new Vector3(data.position_x, data.position_y, 0);
+
+        if (!players.ContainsKey(data.id))
+        {
+           
         }
         else
         {
-            // 存在すれば位置を移動
-            UpdatePlayer(playerData);
+            players[data.id].transform.position = targetPos;
         }
     }
+   /* private void HandleObjectSync(InGameMoveData data)
+    {
+        Vector3 targetPos = new Vector3(data.position_x, data.position_y, 0);
 
+        if (!stageObjects.ContainsKey(data.id))
+        {
+            var newObj = Instantiate(boxPrefab, targetPos, Quaternion.identity);
+            stageObjects[data.id] = newObj;
+        }
+        else
+        {
+            stageObjects[data.id].transform.position = targetPos;
+        }
+    }*/
 }
