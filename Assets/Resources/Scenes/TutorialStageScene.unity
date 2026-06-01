@@ -1308,19 +1308,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6801318402415163268, guid: bf1692042cd765148a6d50fdd9d5b397, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.48369
+      value: 0.12127127
       objectReference: {fileID: 0}
     - target: {fileID: 6801318402415163268, guid: bf1692042cd765148a6d50fdd9d5b397, type: 3}
       propertyPath: m_LocalScale.y
-      value: 6.3470063
+      value: 0.15764308
       objectReference: {fileID: 0}
     - target: {fileID: 6801318402415163268, guid: bf1692042cd765148a6d50fdd9d5b397, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 27.609806
+      value: 27.032581
       objectReference: {fileID: 0}
     - target: {fileID: 6801318402415163268, guid: bf1692042cd765148a6d50fdd9d5b397, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.1364155
+      value: 7.327559
       objectReference: {fileID: 0}
     - target: {fileID: 6801318402415163268, guid: bf1692042cd765148a6d50fdd9d5b397, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3841,19 +3841,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3436524443082691832, guid: 5603f73fdf16d3f49852d2a0c4bd6952, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.4723902
+      value: 0.15228386
       objectReference: {fileID: 0}
     - target: {fileID: 3436524443082691832, guid: 5603f73fdf16d3f49852d2a0c4bd6952, type: 3}
       propertyPath: m_LocalScale.y
-      value: 6.2923255
+      value: 0.20111762
       objectReference: {fileID: 0}
     - target: {fileID: 3436524443082691832, guid: 5603f73fdf16d3f49852d2a0c4bd6952, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.131767
+      value: 22.929255
       objectReference: {fileID: 0}
     - target: {fileID: 3436524443082691832, guid: 5603f73fdf16d3f49852d2a0c4bd6952, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.109076
+      value: 7.979677
       objectReference: {fileID: 0}
     - target: {fileID: 3436524443082691832, guid: 5603f73fdf16d3f49852d2a0c4bd6952, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3929,7 +3929,6 @@ MonoBehaviour:
   confirmationPanel: {fileID: 1346512951}
   menuOpenButton: {fileID: 626735685}
   exitButton: {fileID: 2142463553}
-  yesButton: {fileID: 573501857}
   yesButtonText: {fileID: 1251008532}
   starUIPanel: {fileID: 1584865564}
   starIconPrefab: {fileID: 1868734858400582071, guid: b2b8438d7cb322f4c8fdb9ac492244eb, type: 3}
@@ -4096,11 +4095,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8291407207088595474, guid: 5be6eb7f2ace38943a9b161fc09025a7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 36.24
+      value: 12.38
       objectReference: {fileID: 0}
     - target: {fileID: 8291407207088595474, guid: 5be6eb7f2ace38943a9b161fc09025a7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.5533
+      value: 0.26
       objectReference: {fileID: 0}
     - target: {fileID: 8291407207088595474, guid: 5be6eb7f2ace38943a9b161fc09025a7, type: 3}
       propertyPath: m_LocalPosition.z
