@@ -163,5 +163,4 @@ public class StageMenuManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    
 }

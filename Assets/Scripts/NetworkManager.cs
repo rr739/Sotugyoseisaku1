@@ -47,6 +47,7 @@ public class NetworkManager : MonoBehaviour
         ws = new WebSocket($"ws://192.168.1.12:8080/ws?room_id={roomID}&name_id={playerID}");
 
 
+
         ws.OnOpen += () =>
         {
             print("接続成功");
