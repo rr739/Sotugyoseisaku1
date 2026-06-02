@@ -26,8 +26,11 @@ public class StageSelectData : InitResponse
 [Serializable]
 public class InGameMoveData : InitResponse
 {
-    public string dataType;   
-    public int id;
+    public string dataType;
+    public int char_index;
+
+    public int id;      // オブジェクト用の番号
+
     public float position_x;   // X座標
     public float position_y;   // Y座標
 

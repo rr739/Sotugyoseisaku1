@@ -13,6 +13,7 @@ public class NetworkManager : MonoBehaviour
     public string myRoomID;
     public int myPlayerIndex;
     public int myCharaIndex;
+    public int myRealSelectedChar = -1;
 
     void Start()
     {
@@ -77,16 +78,25 @@ public class NetworkManager : MonoBehaviour
                     charManager.HandleRemoteMessage(msg);
                 }
             }
-            else if (currentSceneName == "GameScene")
-            {
-                
-            }
+           
             else if (currentSceneName == "StageSelectScene")
             {
                 var stageManager = FindObjectOfType<StageManager>();
                 if (stageManager != null)
                 {
                     stageManager.HandleRemoteStageMessage(msg); 
+                }
+            }
+             else if (currentSceneName == "TutorialStageScene")
+            {
+                var onlineComm = FindObjectOfType<ObjectOnlineCommunication>();
+                if (onlineComm != null)
+                {
+                    onlineComm.HandleWebSocketMessage(msg);
+                }
+                else
+                {
+                    Debug.LogWarning("ObjectOnlineCommunication が現在のシーンに見つかりません！");
                 }
             }
         };

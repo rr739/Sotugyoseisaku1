@@ -177,6 +177,11 @@ public class CharacterSelectManager : MonoBehaviour
         SendCharacterState(index, true);
 
         CheckBothPlayersReady();
+
+        if (NetworkManager.Instance != null)
+        {
+            NetworkManager.Instance.myRealSelectedChar = index;
+        }
     }
 
     // NetworkManagerからデータを受け取る部分
