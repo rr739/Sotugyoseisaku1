@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using System.Xml.Linq;
 using Unity.Properties;
 using Unity.VisualScripting;
@@ -176,6 +177,11 @@ public class CharacterSelectManager : MonoBehaviour
         SendCharacterState(index, true);
 
         CheckBothPlayersReady();
+
+        if (NetworkManager.Instance != null)
+        {
+            NetworkManager.Instance.myRealSelectedChar = index;
+        }
     }
 
     // NetworkManagerからデータを受け取る部分
@@ -197,6 +203,8 @@ public class CharacterSelectManager : MonoBehaviour
                     remoteSelectionCursor.position = characterIcons[playerData.char_index].position;
                    
                     remoteplayer = playerData.name_id;
+
+                    NetworkManager.Instance.myCharaIndex = playerData.char_index;
 
                     int myIndex = NetworkManager.Instance.myPlayerIndex;
 
