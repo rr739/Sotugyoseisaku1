@@ -1,68 +1,93 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using UnityEngine.SocialPlatforms;
 
 public class ObjectOnlineCommunication : MonoBehaviour
 {
-    [SerializeField] GameObject[] playersPrefab; // プレイヤーを表すPrefab
-    public Dictionary<int, GameObject> players = new Dictionary<int, GameObject>(); // プレイヤーの一覧
-    public string myPlayerId; // 自分のプレイヤーID
+    [SerializeField] private GameObject[] playersPrefab; // 0:赤のPrefab, 1:青のPrefab
+    public Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
 
-    /*[SerializeField] GameObject boxPrefab; // 動かしたい箱のPrefabなど
-    private Dictionary<int, GameObject> stageObjects = new Dictionary<int, GameObject>();*/
+    [SerializeField] private GameObject ghostPrefab;
+    public Dictionary<int, GameObject> ghostObjects = new Dictionary<int, GameObject>();
 
-    // プレイヤーが炎か氷かを取得
+    [Header("飛ばすもの（弾など）のPrefabリスト")]
+    [SerializeField] private GameObject[] projectilePrefabs; // 0:赤の弾、1:青の弾などを登録
+
+    public Dictionary<int, NetworkIdentity2D> syncObjects = new Dictionary<int, NetworkIdentity2D>();
+
     void Start()
     {
-
-
-        /*// 自分自身のキャラを生成
         if (NetworkManager.Instance != null)
         {
-            int myId = NetworkManager.Instance.myCharaIndex; 
-            int myCharaIndex = NetworkManager.Instance.myCharaIndex; 
+            int myColorIndex = NetworkManager.Instance.myRealSelectedChar;
+            if (myColorIndex == -1) myColorIndex = NetworkManager.Instance.myCharaIndex;
+            int opponentColorIndex = (myColorIndex == 0) ? 1 : 0;
 
-            // 固有IDと、キャラの種類を別々で渡す
-            CreatePlayer(myId, myCharaIndex, Vector3.zero, true);
-        }*/
+            Vector3 myStartPos = Vector3.zero;
+            Vector3 opponentStartPos = Vector3.zero;
 
-        if (NetworkManager.Instance != null)
+            // 選んだ色（0:赤、1:青）によって初期位置を完全に固定する
+            if (myColorIndex == 0)
+            {
+                myStartPos = Vector3.zero;                  // 赤は中央
+                opponentStartPos = new Vector3(2f, 0f, 0f);  // 青は右
+            }
+            else
+            {
+                myStartPos = new Vector3(2f, 0f, 0f);       // 青は右
+                opponentStartPos = Vector3.zero;            // 赤は中央
+            }
+
+            // キャラクターの種類（0か1）をそのまま鍵にして生成
+            CreatePlayer(myColorIndex, myStartPos, true);
+            CreatePlayer(opponentColorIndex, opponentStartPos, false);
+        }
+
+       
+        // ステージ内に最初から配置されている NetworkIdentity2D（箱や扉など）をすべて自動探索して登録！
+        NetworkIdentity2D[] sceneObjects = FindObjectsOfType<NetworkIdentity2D>();
+        foreach (var obj in sceneObjects)
         {
-            int myCharaIndex = NetworkManager.Instance.myCharaIndex; // 0か1
-
-            //  まず自分を生成 (初期位置は Vector3.zero などを適切な開始位置に)
-            CreatePlayer(myCharaIndex, Vector3.zero, true);
-            Debug.Log($"【初期化】自分のキャラ（{myCharaIndex}番）を生成しました。");
-
-            // 相手のキャラも最初からシーンに配置しておく！
-            // 自分が 0(炎) なら 相手は 1(氷) / 自分が 1(氷) なら 相手は 0(炎)
-            int opponentCharaIndex = (myCharaIndex == 0) ? 1 : 0;
-
-            // 相手の初期位置
-            Vector3 opponentStartPos = new Vector3(2f, 0f, 0f);
-
-            CreatePlayer(opponentCharaIndex, opponentStartPos, false);
-            Debug.Log($"【初期化】相手のキャラ（{opponentCharaIndex}番）をあらかじめ生成しました。");
+            // すでに登録されていなければ辞書に入れる
+            if (!syncObjects.ContainsKey(obj.objectId))
+            {
+                syncObjects[obj.objectId] = obj;
+            }
         }
     }
 
     public void CreatePlayer(int charaindex, Vector3 pos, bool isLocal)
     {
-
-        // 生成するPrefabを選ぶために charaindex を使う
         var player = Instantiate(playersPrefab[charaindex], pos, Quaternion.identity);
 
-        // Dictionaryには 0 または 1 をKeyにして保存する
+        // キャラクターの種類（0:赤、1:青）をキーにして辞書に保存
         players[charaindex] = player;
 
-        /*var controller = player.GetComponent<PlayerController>();
+        var controller = player.GetComponent<PlayerController>();
         if (controller != null)
         {
-            controller.isLocalPlayer = isLocal;
-        }*/
+            controller.IsLocalPlayer = isLocal;
+        }
+
+        if (!isLocal)
+        {
+            var rb = player.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.bodyType = RigidbodyType2D.Kinematic;
+                rb.velocity = Vector2.zero;
+            }
+
+            // ゴーストを生成して辞書に保存
+            if (ghostPrefab != null)
+            {
+                var ghost = Instantiate(ghostPrefab, pos, Quaternion.identity);
+                ghost.name = $"Ghost_Player_{charaindex}";
+                ghostObjects[charaindex] = ghost;
+            }
+        }
     }
+
     public void HandleWebSocketMessage(string msg)
     {
         var data = JsonUtility.FromJson<InGameMoveData>(msg);
@@ -71,45 +96,97 @@ public class ObjectOnlineCommunication : MonoBehaviour
         {
             HandlePlayerSync(data);
         }
-        else if (data.dataType == "object")
+        else if (data.dataType == "object" || data.dataType == "spawn_projectile")
         {
-            //HandleObjectSync(data);
+            // ★弾生成イベント(spawn_projectile)も位置同期(object)も、同じオブジェクト同期関数で処理する
+            HandleObjectSync(data);
         }
     }
-
-    
 
     private void HandlePlayerSync(InGameMoveData data)
     {
-        // 【デバッグログ】何番のIDが送られてきているかコンソールで確認する
-        Debug.Log($"受信したプレイヤーID: {data.id} / 自分のインデックス: {NetworkManager.Instance.myCharaIndex}");
+        if (NetworkManager.Instance == null) return;
 
-        // 一番最初に自分かどうかをチェックする（まだ生成してない場合も含めて無視する）
-        if (data.id == NetworkManager.Instance.myCharaIndex) return;
+        // 自分の選んだキャラ情報
+        int myRealColor = NetworkManager.Instance.myRealSelectedChar;
+        if (myRealColor == -1) myRealColor = NetworkManager.Instance.myCharaIndex;
+
+        // 届いたデータの色が、自分のキャラと同じなら自分のデータなので無視
+        if (data.char_index == myRealColor) return;
+
+        // データの部屋IDが自分と違う場合も無視
+        if (data.room_id != NetworkManager.Instance.myRoomID) return;
 
         Vector3 targetPos = new Vector3(data.position_x, data.position_y, 0);
 
-        if (!players.ContainsKey(data.id))
+        // 1. まず届いた生データ（ゴーストオブジェクト）をその座標に「瞬間移動」させて可視化する
+        if (ghostObjects.ContainsKey(data.char_index))
         {
-           
+            ghostObjects[data.char_index].transform.position = targetPos;
         }
-        else
+
+        // 2. 本物のキャラクターには、そのゴーストを追尾させるために座標を教える
+        if (players.ContainsKey(data.char_index))
         {
-            players[data.id].transform.position = targetPos;
+            var controller = players[data.char_index].GetComponent<PlayerController>();
+            if (controller != null)
+            {
+                // ゴーストの座標を目標地点として設定
+                controller.TargetPosition = targetPos;
+            }
         }
     }
-   /* private void HandleObjectSync(InGameMoveData data)
+
+    private void HandleObjectSync(InGameMoveData data)
     {
+        if (NetworkManager.Instance == null) return;
+        if (data.room_id != NetworkManager.Instance.myRoomID) return;
+
         Vector3 targetPos = new Vector3(data.position_x, data.position_y, 0);
 
-        if (!stageObjects.ContainsKey(data.id))
+        
+        // 届いたIDが「1000番以上（＝弾）」で、まだ画面（辞書）に存在しない場合、その場で即座に生成する
+        if (data.id >= 1000 && !syncObjects.ContainsKey(data.id))
         {
-            var newObj = Instantiate(boxPrefab, targetPos, Quaternion.identity);
-            stageObjects[data.id] = newObj;
+            // IDの千の位から、どっちのプレイヤーが撃った弾かを自動判別
+            // 1000番台なら0(赤)、2000番台なら1(青)
+            int bulletType = (data.id >= 2000) ? 1 : 0;
+
+            if (projectilePrefabs != null && bulletType < projectilePrefabs.Length && projectilePrefabs[bulletType] != null)
+            {
+                // 相手の画面に弾を生成
+                GameObject spawnedProjectile = Instantiate(projectilePrefabs[bulletType], targetPos, Quaternion.identity);
+                var identity = spawnedProjectile.GetComponent<NetworkIdentity2D>();
+                if (identity != null)
+                {
+                    identity.objectId = data.id;
+                    identity.isOwnedByLocal = false; // 自分のものではない
+
+                    // 物理演算を止める
+                    var rb = spawnedProjectile.GetComponent<Rigidbody2D>();
+                    if (rb != null)
+                    {
+                        rb.bodyType = RigidbodyType2D.Kinematic;
+                        rb.velocity = Vector2.zero;
+                    }
+
+                    // 辞書に登録して、次からの位置同期と紐付ける
+                    syncObjects[data.id] = identity;
+                    Debug.Log($"[ネットワーク生成成功] 弾オブジェクト ID: {data.id} を生成しました。");
+                }
+            }
+            else
+            {
+                Debug.LogError($"[エラー] ObjectOnlineCommunicationのProjectilePrefabsにPrefabが正しく登録されていません！");
+                return;
+            }
         }
-        else
+
+        // 既存のオブジェクト、もしくは上で新しく生成された弾の座標を更新する
+        if (syncObjects.ContainsKey(data.id))
         {
-            stageObjects[data.id].transform.position = targetPos;
+            var targetObj = syncObjects[data.id];
+            targetObj.UpdatePositionFromNetwork(targetPos);
         }
-    }*/
+    }
 }
