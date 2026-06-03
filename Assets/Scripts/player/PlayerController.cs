@@ -1,52 +1,61 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("ƒLƒƒƒ‰ƒNƒ^[‚Ì‘®«")]
-    [SerializeField] private ElementType element; // ‘®«İ’èFFirei‰Šj‚Ü‚½‚Í Icei•Xj
-    public ElementType Element => element;       // ‘¼‚ÌƒNƒ‰ƒX‚©‚ç‘®«‚ğŠm”F‚·‚é‚½‚ß‚ÌŒöŠJƒvƒƒpƒeƒB
+    [Header("ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®å±æ€§")]
+    [SerializeField] private ElementType element; // å±æ€§è¨­å®šï¼šFireï¼ˆç‚ï¼‰ã¾ãŸã¯ Iceï¼ˆæ°·ï¼‰
+    public ElementType Element => element;       // ä»–ã®ã‚¯ãƒ©ã‚¹ã‹ã‚‰å±æ€§ã‚’ç¢ºèªã™ã‚‹ãŸã‚ã®å…¬é–‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 
-    [Header("ˆÚ“®EƒWƒƒƒ“ƒvİ’è")]
-    [SerializeField] private float moveSpeed = 5.0f;           // Šî–{‚ÌˆÚ“®‘¬“x
-    [SerializeField] private float pushSpeedMultiplier = 0.5f; // ƒIƒuƒWƒFƒNƒg‰Ÿ‚µo‚µ’†‚ÌˆÚ“®‘¬“x”{—¦i—á: 0.5‚È‚ç‘¬“x”¼•ªj
-    [SerializeField] private float jumpForce = 6.5f;           // ƒWƒƒƒ“ƒv‚É‰Á‚¦‚é—Í‚Ì‹­‚³
+    [Header("ç§»å‹•ãƒ»ã‚¸ãƒ£ãƒ³ãƒ—è¨­å®š")]
+    [SerializeField] private float moveSpeed = 5.0f;           // åŸºæœ¬ã®ç§»å‹•é€Ÿåº¦
+    [SerializeField] private float pushSpeedMultiplier = 0.5f; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæŠ¼ã—å‡ºã—ä¸­ã®ç§»å‹•é€Ÿåº¦å€ç‡ï¼ˆä¾‹: 0.5ãªã‚‰é€Ÿåº¦åŠåˆ†ï¼‰
+    [SerializeField] private float jumpForce = 6.5f;           // ã‚¸ãƒ£ãƒ³ãƒ—æ™‚ã«åŠ ãˆã‚‹åŠ›ã®å¼·ã•
 
-    [Header("ËŒ‚iƒN[ƒ‹ƒ^ƒCƒ€jİ’è")]
-    [SerializeField] private float fireRate = 0.3f; // Ÿ‚Ì’e‚ğŒ‚‚Â‚Ü‚Å‚É•K—v‚È‘Ò‹@ŠÔi•bj
-    private float nextFireTime = 0f;               // Ÿ‚É”­Ë‚ª‰Â”\‚É‚È‚é‚Ì‹L˜^—p
+    [Header("å°„æ’ƒï¼ˆã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ï¼‰è¨­å®š")]
+    [SerializeField] private float fireRate = 0.3f; // æ¬¡ã®å¼¾ã‚’æ’ƒã¤ã¾ã§ã«å¿…è¦ãªå¾…æ©Ÿæ™‚é–“ï¼ˆç§’ï¼‰
+    private float nextFireTime = 0f;                // æ¬¡ã«ç™ºå°„ãŒå¯èƒ½ã«ãªã‚‹æ™‚åˆ»ã®è¨˜éŒ²ç”¨
 
-    [Header("ƒCƒ“ƒvƒbƒgİ’èiInputManager‚Ì–¼‘Oj")]
-    [SerializeField] private string horizontalAxis = "Horizontal1"; // ¶‰EˆÚ“®‚Ég—p‚·‚é²‚Ì–¼‘O
-    [SerializeField] private string jumpButton = "Jump1";           // ƒWƒƒƒ“ƒv‚Ég—p‚·‚éƒ{ƒ^ƒ“‚Ì–¼‘O
-    [SerializeField] private string fireButton = "Fire1";           // UŒ‚‚Ég—p‚·‚éƒ{ƒ^ƒ“‚Ì–¼‘O
+    [Header("ã‚¤ãƒ³ãƒ—ãƒƒãƒˆè¨­å®šï¼ˆInputManagerã®åå‰ï¼‰")]
+    [SerializeField] private string horizontalAxis = "Horizontal1"; // å·¦å³ç§»å‹•ã«ä½¿ç”¨ã™ã‚‹è»¸ã®åå‰
+    [SerializeField] private string jumpButton = "Jump1";           // ã‚¸ãƒ£ãƒ³ãƒ—ã«ä½¿ç”¨ã™ã‚‹ãƒœã‚¿ãƒ³ã®åå‰
+    [SerializeField] private string fireButton = "Fire1";           // æ”»æ’ƒã«ä½¿ç”¨ã™ã‚‹ãƒœã‚¿ãƒ³ã®åå‰
 
-    [Header("ŠeíQÆİ’è")]
-    [SerializeField] private GameObject projectilePrefab; // ”­Ë‚·‚é’e‚ÌƒvƒŒƒnƒu
-    [SerializeField] private Transform firePoint;         // ’e‚ª¶¬ioŒ»j‚·‚éƒ|ƒCƒ“ƒg
-    [SerializeField] private LayerMask groundLayer;       // ’n–Ê”»’è‚ğs‚¤‘ÎÛƒŒƒCƒ„[
-    [SerializeField] private LayerMask pushableLayer;     // ‰Ÿ‚µo‚µ‰Â”\‚ÈƒIƒuƒWƒFƒNƒg‚ÌƒŒƒCƒ„[[
+    [Header("å„ç¨®å‚ç…§è¨­å®š")]
+    [SerializeField] private GameObject projectilePrefab; // ç™ºå°„ã™ã‚‹å¼¾ã®ãƒ—ãƒ¬ãƒãƒ–
+    [SerializeField] private Transform firePoint;          // å¼¾ãŒç”Ÿæˆï¼ˆå‡ºç¾ï¼‰ã™ã‚‹ãƒã‚¤ãƒ³ãƒˆ
+    [SerializeField] private LayerMask groundLayer;       // åœ°é¢åˆ¤å®šã‚’è¡Œã†å¯¾è±¡ãƒ¬ã‚¤ãƒ¤ãƒ¼
+    [SerializeField] private LayerMask pushableLayer;      // æŠ¼ã—å‡ºã—å¯èƒ½ãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¬ã‚¤ãƒ¤ãƒ¼
 
     public bool CanMove { get; set; } = true;
 
     private Rigidbody2D rb;
-    private bool isGrounded; // Œ»İA’n–Ê‚ÉÚ’n‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
-    private bool isPushing;  // Œ»İA‰Ÿ‚µo‚µ‘ÎÛ‚ÉÚG‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
-    void Awake() => rb = GetComponent<Rigidbody2D>();
+    private Animator anim;                 // â˜…ã€è¿½åŠ ã€‘ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚¿ãƒ¼ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆç”¨
+    private SpriteRenderer spriteRenderer; // â˜…ã€è¿½åŠ ã€‘ã‚­ãƒ£ãƒ©ã®å‘ãã‚’å·¦å³åè»¢ã•ã›ã‚‹ç”¨
+
+    private bool isGrounded; // ç¾åœ¨ã€åœ°é¢ã«æ¥åœ°ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+    private bool isPushing;  // ç¾åœ¨ã€æŠ¼ã—å‡ºã—å¯¾è±¡ã«æ¥è§¦ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();                 // â˜…ã€è¿½åŠ ã€‘èµ·å‹•æ™‚ã«è‡ªå‹•å–å¾—
+        spriteRenderer = GetComponent<SpriteRenderer>(); // â˜…ã€è¿½åŠ ã€‘èµ·å‹•æ™‚ã«è‡ªå‹•å–å¾—
+    }
 
     void Update()
     {
-        // –ˆƒtƒŒ[ƒ€ˆÚ“®ˆ—‚ğŒÄ‚Ño‚µ
+        // æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ç§»å‹•å‡¦ç†ã‚’å‘¼ã³å‡ºã—
         Move();
 
-        // ƒWƒƒƒ“ƒvFƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½uŠÔ Š‚Â ’n–Ê‚É‚¢‚é
+        // ã‚¸ãƒ£ãƒ³ãƒ—ï¼šãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸç¬é–“ ä¸”ã¤ åœ°é¢ã«ã„ã‚‹æ™‚
         if (Input.GetButtonDown(jumpButton) && isGrounded) Jump();
 
-        // UŒ‚Fƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½uŠÔ
+        // æ”»æ’ƒï¼šãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸç¬é–“
         if (Input.GetButtonDown(fireButton))
         {
-            // šy‚±‚±‚ğ’Ç‰Áz‚à‚µ¡Aƒ}ƒEƒX‚ªUIiƒƒjƒ…[ƒ{ƒ^ƒ“‚âu‚Í‚¢vƒ{ƒ^ƒ“j‚Ìã‚É‚ ‚é‚È‚çAËŒ‚‚ğƒXƒ‹[‚·‚é
+            // ã‚‚ã—ä»Šã€ãƒã‚¦ã‚¹ãŒUIï¼ˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœã‚¿ãƒ³ã‚„ã€Œã¯ã„ã€ãƒœã‚¿ãƒ³ï¼‰ã®ä¸Šã«ã‚ã‚‹ãªã‚‰ã€å°„æ’ƒã‚’ã‚¹ãƒ«ãƒ¼ã™ã‚‹
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             {
                 return;
@@ -54,92 +63,138 @@ public class PlayerController : MonoBehaviour
 
             Shoot();
         }
+
+        // â˜…ã€è¿½åŠ ã€‘æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æœ€æ–°ã®çŠ¶æ…‹ã‚’Animatorã«æ–‡å­—ã¨æ•°å€¤ã§é€ä¿¡ã™ã‚‹
+        UpdateAnimationParameters();
     }
 
     private void Move()
     {
-        // “ü—Í’l‚ğæ“¾i-1, 0, 1j
+        // å…¥åŠ›å€¤ã‚’å–å¾—ï¼ˆ-1, 0, 1ï¼‰
         float moveInput = Input.GetAxisRaw(horizontalAxis);
 
-        // u” ‚ÉG‚ê‚Ä‚¢‚év‚©‚Âu” ‚ª‚ ‚é•ûŒü‚ÉƒL[‚ğ“ü—Í‚µ‚Ä‚¢‚év‚¾‚¯A–{“–‚É‰Ÿ‚µ‚Ä‚¢‚é‚Æ”»’è
+        // ã€Œç®±ã«è§¦ã‚Œã¦ã„ã‚‹ã€ã‹ã¤ã€Œç®±ãŒã‚ã‚‹æ–¹å‘ã«ã‚­ãƒ¼ã‚’å…¥åŠ›ã—ã¦ã„ã‚‹ã€æ™‚ã ã‘ã€æœ¬å½“ã«æŠ¼ã—ã¦ã„ã‚‹ã¨åˆ¤å®š
         bool isActuallyPushing = isPushing && IsInputtingTowardsBox(moveInput);
 
-        // ‰Ÿ‚µó‘Ô‚È‚ç‘¬“x‚ğ‰º‚°A‚»‚¤‚Å‚È‚¯‚ê‚Î’Êí‚Ì‘¬“x‚ğ“K—p
+        // æŠ¼ã—çŠ¶æ…‹ãªã‚‰é€Ÿåº¦ã‚’ä¸‹ã’ã€ãã†ã§ãªã‘ã‚Œã°é€šå¸¸ã®é€Ÿåº¦ã‚’é©ç”¨
         float currentSpeed = isActuallyPushing ? moveSpeed * pushSpeedMultiplier : moveSpeed;
 
-        // ¶‰E‚Ì‘¬“x‚ğİ’èiy²‚ÍŒ»İ‚Ì•¨—‹““®‚ğˆÛj
+        // å·¦å³ã®é€Ÿåº¦ã‚’è¨­å®šï¼ˆyè»¸ã¯ç¾åœ¨ã®ç‰©ç†æŒ™å‹•ã‚’ç¶­æŒï¼‰
         rb.velocity = new Vector2(moveInput * currentSpeed, rb.velocity.y);
+
+        // â˜…ã€è¿½åŠ ã€‘é€²è¡Œæ–¹å‘ï¼ˆå…¥åŠ›å€¤ï¼‰ã«åˆã‚ã›ã¦ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ã‚¤ãƒ©ã‚¹ãƒˆã‚’è‡ªå‹•ã§å·¦å³åè»¢ã™ã‚‹
+        if (moveInput > 0.1f)
+        {
+            spriteRenderer.flipX = false; // å³ã‚’å‘ã
+        }
+        else if (moveInput < -0.1f)
+        {
+            spriteRenderer.flipX = true;  // å·¦ã‚’å‘ã
+        }
     }
 
-    // “ü—Í‚µ‚½•ûŒü‚É” ‚ª‚ ‚é‚©‚Ç‚¤‚©‚ğŠm”F‚·‚é”»’èiRaycast‚ğg—pj
+    // å…¥åŠ›ã—ãŸæ–¹å‘ã«ç®±ãŒã‚ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã™ã‚‹åˆ¤å®šï¼ˆRaycastã‚’ä½¿ç”¨ï¼‰
     private bool IsInputtingTowardsBox(float moveInput)
     {
         if (moveInput == 0) return false;
 
-        float checkDistance = 0.5f; // ƒLƒƒƒ‰ƒNƒ^[‚©‚ç‘O•û‚Ç‚ê‚­‚ç‚¢‚Ì‹——£‚Ü‚ÅŠm”F‚·‚é‚©
-        // RaycastiŒõüj‚ğ”ò‚Î‚µ‚Äw’èƒŒƒCƒ„[‚ÌƒIƒuƒWƒFƒNƒg‚É“–‚½‚Á‚½‚©ƒ`ƒFƒbƒN
+        float checkDistance = 0.5f; // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‹ã‚‰å‰æ–¹ã©ã‚Œãã‚‰ã„ã®è·é›¢ã¾ã§ç¢ºèªã™ã‚‹ã‹
+        // Raycastï¼ˆå…‰ç·šï¼‰ã‚’é£›ã°ã—ã¦æŒ‡å®šãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å½“ãŸã£ãŸã‹ãƒã‚§ãƒƒã‚¯
         RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(moveInput, 0), checkDistance, pushableLayer);
 
-        return hit.collider != null; // “–‚½‚Á‚½‚à‚Ì‚ª‚ ‚ê‚Îtrue‚ğ•Ô‚·
+        return hit.collider != null; // å½“ãŸã£ãŸã‚‚ã®ãŒã‚ã‚Œã°trueã‚’è¿”ã™
     }
 
     private void Jump()
     {
-        // ƒWƒƒƒ“ƒv‚ÌuŠÔ‚Éc•ûŒü‚Ì‘¬“x‚ğƒŠƒZƒbƒgi—‰º’†‚È‚Ç‚Ì¨‚¢‚ğÁ‚µ‚ÄˆÀ’è‚³‚¹‚éj
+        // ã‚¸ãƒ£ãƒ³ãƒ—ã®ç¬é–“ã«ç¸¦æ–¹å‘ã®é€Ÿåº¦ã‚’ãƒªã‚»ãƒƒãƒˆï¼ˆè½ä¸‹ä¸­ãªã©ã®å‹¢ã„ã‚’æ¶ˆã—ã¦å®‰å®šã•ã›ã‚‹ï¼‰
         rb.velocity = new Vector2(rb.velocity.x, 0);
-        // ã•ûŒü‚ÉuŠÔ“I‚È—Í‚ğ‰Á‚¦‚é
+        // ä¸Šæ–¹å‘ã«ç¬é–“çš„ãªåŠ›ã‚’åŠ ãˆã‚‹
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
     private void Shoot()
     {
-        // ƒN[ƒ‹ƒ^ƒCƒ€”»’èFŒ»İ‚ÌƒQ[ƒ€ŠÔ‚ª”­Ë‰Â”\‚ğ‰ß‚¬‚Ä‚¢‚é‚©Šm”F
+        // ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ åˆ¤å®šï¼šç¾åœ¨ã®ã‚²ãƒ¼ãƒ æ™‚é–“ãŒç™ºå°„å¯èƒ½æ™‚åˆ»ã‚’éãã¦ã„ã‚‹ã‹ç¢ºèª
         if (Time.time < nextFireTime) return;
 
-        // ƒvƒŒƒnƒu‚â”­Ë’n“_‚ª–¢İ’è‚È‚çƒGƒ‰[–h~‚Ì‚½‚ß’†’f
+        // ãƒ—ãƒ¬ãƒãƒ–ã‚„ç™ºå°„åœ°ç‚¹ãŒæœªè¨­å®šãªã‚‰ã‚¨ãƒ©ãƒ¼é˜²æ­¢ã®ãŸã‚ä¸­æ–­
         if (projectilePrefab == null || firePoint == null) return;
 
-        // ’e‚ğ¶¬iˆÊ’u‚ÆŒü‚«‚ğfirePoint‚É‡‚í‚¹‚éj
-        Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå·¦ã‚’å‘ã„ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
+        bool isFacingLeft = spriteRenderer.flipX;
 
-        // Ÿ‚ÉŒ‚‚Ä‚é‚ğXViŒ»İ + ˜AËŠÔŠuj
+        // ä¿®æ­£å¾Œï¼ˆå·¦å‘ãã®æ™‚ã«å›è»¢ã•ã›ãšã€å³å‘ãã®æ™‚ã«180åº¦å›ã™ï¼‰
+        Quaternion spawnRotation = isFacingLeft ? Quaternion.identity : Quaternion.Euler(0, 0, 180f);
+
+        // æ±ºå®šã—ãŸå‘ãï¼ˆè§’åº¦ï¼‰ã§å¼¾ã‚’ç”Ÿæˆ
+        GameObject projectileObj = Instantiate(projectilePrefab, firePoint.position, spawnRotation);
+
+        // â˜…ã€ã“ã“ã‚’ä¿®æ­£ã€‘ç”Ÿæˆã—ãŸå¼¾ã«ã€Œé£›ã¶æ–¹å‘ã€ã¨ã€Œè‡ªåˆ†ã®å±æ€§ã€ã‚’ç›´æ¥æµã—è¾¼ã‚€
+        Projectile projectileScript = projectileObj.GetComponent<Projectile>();
+        if (projectileScript != null)
+        {
+            float direction = isFacingLeft ? -1f : 1f; // å·¦ãªã‚‰ -1ã€å³ãªã‚‰ 1
+
+            // å¤ã„ SetDirection ã§ã¯ãªãã€æ–°ã—ãä½œã£ãŸ Initialize ã‚’å‘¼ã³å‡ºã™
+            projectileScript.Initialize(direction, element);
+        }
+
+        // æ¬¡ã«æ’ƒã¦ã‚‹æ™‚åˆ»ã‚’æ›´æ–°ï¼ˆç¾åœ¨æ™‚åˆ» + é€£å°„é–“éš”ï¼‰
         nextFireTime = Time.time + fireRate;
     }
 
-    // Õ“ËŠJn‚Ì”»’è
+    // â˜…ã€è¿½åŠ ã€‘Animatorã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã«æ•°å€¤ã‚’æ›¸ãè¾¼ã‚€å°‚ç”¨ã®å‡¦ç†
+    // Animatorã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã«æ•°å€¤ã‚’æ›¸ãè¾¼ã‚€å°‚ç”¨ã®å‡¦ç†
+    private void UpdateAnimationParameters()
+    {
+        if (anim == null) return;
+
+        // ã€ä¿®æ­£ã€‘ç¾åœ¨ã® Rigidbody2D ã®ã€Œå®Ÿéš›ã®ç‰©ç†çš„ãªç§»å‹•é€Ÿåº¦ã€ã‚’ãƒ™ãƒ¼ã‚¹ã«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
+        // ã“ã‚Œã«ã‚ˆã‚Šã€Inputã®å¾®å°ãªãƒ–ãƒ¬ã‚„éŠã³ã«å·¦å³ã•ã‚Œãšã€ã‚­ãƒ£ãƒ©ãŒæœ¬å½“ã«æ­¢ã¾ã£ãŸã‚‰å®Œå…¨ã«Idleã«æˆ»ã‚Šã¾ã™
+        float currentHorizontalSpeed = Mathf.Abs(rb.velocity.x);
+        anim.SetFloat("Speed", currentHorizontalSpeed);
+
+        // åœ°é¢ã«ç€åœ°ã—ã¦ã„ã‚‹ã‹ã®åˆ¤å®šï¼ˆtrue / falseï¼‰ã‚’ãã®ã¾ã¾é€ã‚‹
+        anim.SetBool("isGrounded", isGrounded);
+
+        // ç‰©ç†æ¼”ç®—ã®ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ ãªç¸¦æ–¹å‘ã®é€Ÿåº¦ï¼ˆä¸Šæ˜‡ä¸­ãªã‚‰ãƒ—ãƒ©ã‚¹ã€è½ä¸‹ä¸­ãªã‚‰ãƒã‚¤ãƒŠã‚¹ï¼‰ã‚’é€ã‚‹
+        anim.SetFloat("yVelocity", rb.velocity.y);
+    }
+
+    // è¡çªé–‹å§‹æ™‚ã®åˆ¤å®š
     private void OnCollisionEnter2D(Collision2D collision) => CheckContact(collision, true);
-    // Õ“ËI—¹‚Ì”»’è
+    // è¡çªçµ‚äº†æ™‚ã®åˆ¤å®š
     private void OnCollisionExit2D(Collision2D collision) => CheckContact(collision, false);
 
-    // Õ“Ë‚µ‚Ä‚¢‚é‘Šè‚ª°‚©” ‚©‚ğŠm”F‚µAó‘Ô‚ğXV‚·‚é
-    // Õ“Ë‚µ‚Ä‚¢‚é‘Šè‚ª°‚©” ‚©‚ğŠm”F‚µAó‘Ô‚ğXV‚·‚é
+    // è¡çªã—ã¦ã„ã‚‹ç›¸æ‰‹ãŒåºŠã‹ç®±ã‹ã‚’ç¢ºèªã—ã€çŠ¶æ…‹ã‚’æ›´æ–°ã™ã‚‹
     private void CheckContact(Collision2D collision, bool state)
     {
         int layer = collision.gameObject.layer;
 
-        // ƒrƒbƒg‰‰Z‚ğg—p‚µ‚ÄƒŒƒCƒ„[‚ªˆê’v‚·‚é‚©ƒ`ƒFƒbƒN
+        // ãƒ“ãƒƒãƒˆæ¼”ç®—ã‚’ä½¿ç”¨ã—ã¦ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒä¸€è‡´ã™ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
         bool isGroundLayer = ((1 << layer) & groundLayer) != 0;
         bool isPushableLayer = ((1 << layer) & pushableLayer) != 0;
 
         if (isGroundLayer)
         {
-            if (state) // ÚG‚µ‚½iEnterj‚Æ‚«
+            if (state) // æ¥è§¦ã—ãŸï¼ˆEnterï¼‰ã¨ã
             {
-                // Õ“Ë‚µ‚½–ÊiÚ“_j‚ÌŒü‚«‚ğŠm”F‚·‚é
+                // è¡çªã—ãŸé¢ï¼ˆæ¥ç‚¹ï¼‰ã®å‘ãã‚’ç¢ºèªã™ã‚‹
                 foreach (ContactPoint2D contact in collision.contacts)
                 {
-                    // normal.y ‚ª 0.7 ˆÈã‚Ì‚Æ‚«uã‚ğŒü‚¢‚Ä‚¢‚é–Êi°jv‚Æ”»’è‚·‚é
-                    // i^ã‚È‚ç 1.0A45“x‚Ìâ“¹‚È‚ç–ñ 0.707j
+                    // normal.y ãŒ 0.7 ä»¥ä¸Šã®ã¨ãã€Œä¸Šã‚’å‘ã„ã¦ã„ã‚‹é¢ï¼ˆï¼åºŠï¼‰ã€ã¨åˆ¤å®šã™ã‚‹
+                    // ï¼ˆçœŸä¸Šãªã‚‰ 1.0ã€45åº¦ã®å‚é“ãªã‚‰ç´„ 0.707ï¼‰
                     float minGroundAngleY = 0.7f;
 
                     if (contact.normal.y >= minGroundAngleY)
                     {
                         isGrounded = true;
-                        break; // °‚ªŒ©‚Â‚©‚Á‚½‚Ì‚Åƒ‹[ƒv‚ğ”²‚¯‚é
+                        break; // åºŠãŒè¦‹ã¤ã‹ã£ãŸã®ã§ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
                     }
                 }
             }
-            else // —£‚ê‚½iExitj‚Æ‚«
+            else // é›¢ã‚ŒãŸï¼ˆExitï¼‰ã¨ã
             {
                 isGrounded = false;
             }

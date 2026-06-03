@@ -12,18 +12,44 @@ public class Projectile : MonoBehaviour
     // インスペクターで「壁(Wall)」「床(Ground)」「箱(Pushable)」にチェックを入れる
     [SerializeField] private LayerMask collisionLayers;
 
-    private void Start()
-    {
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+    private Rigidbody2D rb;
+    private float moveDirection = 1f; // ★【追加】飛ぶ方向（1なら右、-1なら左）
+    private bool isInitialized = false; // ★【追加】初期化が完了したかのフラグ
 
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
         // 重力の影響を無効化
         rb.gravityScale = 0f;
+    }
 
-        // 向いている方向に飛ばす
-        rb.velocity = transform.right * speed;
-
+    private void Start()
+    {
         // 【時間経過で消滅】指定した秒数（1.5秒）後に自分を削除
         Destroy(gameObject, lifeTime);
+    }
+
+    // ★【追加】プレイヤーから「向き」と「属性」を受け取って、勢いよく飛ばす処理
+    public void Initialize(float direction, ElementType playerElement)
+    {
+        moveDirection = direction;
+        projectileType = playerElement; // プレイヤーの属性（FireやIce）を自動コピー
+        isInitialized = true;
+
+        // 向いている方向（右 or 左）に物理速度をセットする
+        if (rb != null)
+        {
+            rb.velocity = new Vector2(speed * moveDirection, 0f);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        // ★【追加】万が一、衝突などで弾の速度が落ちたり変わったりしないよう、消えるまで速度を一定に維持する
+        if (isInitialized && rb != null)
+        {
+            rb.velocity = new Vector2(speed * moveDirection, 0f);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
