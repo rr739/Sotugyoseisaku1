@@ -2,7 +2,7 @@
 using WebSocket = NativeWebSocket.WebSocket;
 using System;
 using System.Threading.Tasks;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -44,8 +44,8 @@ public class NetworkManager : MonoBehaviour
         myPlayerId = playerID;
         myRoomID = roomID;
 
-        ws = new WebSocket($"ws://192.168.1.12:8080/ws?room_id={roomID}&name_id={playerID}");
 
+        ws = new WebSocket($"ws://192.168.1.12:8080/ws?room_id={roomID}&name_id={playerID}");
 
         ws.OnOpen += () =>
         {
@@ -62,7 +62,7 @@ public class NetworkManager : MonoBehaviour
 
             //  シーン名に応じて、届いたデータの届け先を完全に仕分ける！
             if (currentSceneName == "SecondScene" || currentSceneName == "TopViewScene")
-            { 
+            {
                 var client = FindObjectOfType<TopViewClient>();
                 if (client != null)
                 {
@@ -71,23 +71,23 @@ public class NetworkManager : MonoBehaviour
             }
             else if (currentSceneName == "CharacterSelectScene")
             {
-              
+
                 var charManager = FindObjectOfType<CharacterSelectManager>();
                 if (charManager != null)
                 {
                     charManager.HandleRemoteMessage(msg);
                 }
             }
-           
+
             else if (currentSceneName == "StageSelectScene")
             {
                 var stageManager = FindObjectOfType<StageManager>();
                 if (stageManager != null)
                 {
-                    stageManager.HandleRemoteStageMessage(msg); 
+                    stageManager.HandleRemoteStageMessage(msg);
                 }
             }
-             else if (currentSceneName == "TutorialStageScene")
+            else if (currentSceneName == "TutorialStageScene")
             {
                 var onlineComm = FindObjectOfType<ObjectOnlineCommunication>();
                 if (onlineComm != null)
@@ -134,7 +134,7 @@ public class NetworkManager : MonoBehaviour
 
         myPlayerIndex = -1;
 
-     
+
 
     }
 }
