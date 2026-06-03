@@ -1,42 +1,64 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Projectile : MonoBehaviour
 {
     [Header("Projectile Settings")]
     [SerializeField] private float speed = 10.0f;
-    [SerializeField] private float lifeTime = 1.5f; // 1.5•b‚Å©“®Á–Å
+    [SerializeField] private float lifeTime = 1.5f; // 1.5ç§’ã§è‡ªå‹•æ¶ˆæ»…
     [SerializeField] private ElementType projectileType;
 
     [Header("Collision Settings")]
-    // ƒCƒ“ƒXƒyƒNƒ^[‚Åu•Ç(Wall)vu°(Ground)vu” (Pushable)v‚Éƒ`ƒFƒbƒN‚ğ“ü‚ê‚é
+    // ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ãƒ¼ã§ã€Œå£(Wall)ã€ã€ŒåºŠ(Ground)ã€ã€Œç®±(Pushable)ã€ã«ãƒã‚§ãƒƒã‚¯ã‚’å…¥ã‚Œã‚‹
     [SerializeField] private LayerMask collisionLayers;
 
     private Rigidbody2D rb;
-    private float moveDirection = 1f; // šy’Ç‰Áz”ò‚Ô•ûŒüi1‚È‚ç‰EA-1‚È‚ç¶j
-    private bool isInitialized = false; // šy’Ç‰Áz‰Šú‰»‚ªŠ®—¹‚µ‚½‚©‚Ìƒtƒ‰ƒO
+    private float moveDirection = 1f; // é£›ã¶æ–¹å‘ï¼ˆ1ãªã‚‰å³ã€-1ãªã‚‰å·¦ï¼‰
+    private bool isInitialized = false; // åˆæœŸåŒ–ãŒå®Œäº†ã—ãŸã‹ã®ãƒ•ãƒ©ã‚°
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        // d—Í‚Ì‰e‹¿‚ğ–³Œø‰»
+        // é‡åŠ›ã®å½±éŸ¿ã‚’ç„¡åŠ¹åŒ–
         rb.gravityScale = 0f;
     }
 
     private void Start()
     {
-        // yŠÔŒo‰ß‚ÅÁ–Åzw’è‚µ‚½•b”i1.5•bjŒã‚É©•ª‚ğíœ
+        // â˜…ã€ä¿®æ­£ã€‘ã™ã§ã« Initialize ã§æ–¹å‘ãŒæ±ºã¾ã£ã¦ã„ã‚‹ãªã‚‰ã€ä»¥ä¸‹ã®è‡ªå‹•åˆ¤å®šã¯å®Œå…¨ã«ã‚¹ãƒ«ãƒ¼ã™ã‚‹ï¼
+        if (!isInitialized)
+        {
+            // ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯çµŒç”±ã§ç›¸æ‰‹ã®ç”»é¢ã«ç›´æ¥ç”Ÿæˆã•ã‚ŒãŸæ™‚ã ã‘ã®æ•‘æ¸ˆæªç½®
+            float currentRotationZ = transform.eulerAngles.z;
+            if (currentRotationZ > 170f && currentRotationZ < 190f)
+            {
+                moveDirection = -1f;
+            }
+            else
+            {
+                moveDirection = 1f;
+            }
+            isInitialized = true;
+        }
+
+        // ç¢ºå®šã—ãŸæ­£ã—ã„æ–¹å‘ï¼ˆmoveDirectionï¼‰ã¸ç‰©ç†é€Ÿåº¦ã‚’è¨­å®šã™ã‚‹
+        if (rb != null)
+        {
+            rb.velocity = new Vector2(speed * moveDirection, 0f);
+        }
+
+        // ã€æ™‚é–“çµŒéã§æ¶ˆæ»…ã€‘æŒ‡å®šã—ãŸç§’æ•°ï¼ˆ1.5ç§’ï¼‰å¾Œã«è‡ªåˆ†ã‚’å‰Šé™¤
         Destroy(gameObject, lifeTime);
     }
 
-    // šy’Ç‰ÁzƒvƒŒƒCƒ„[‚©‚çuŒü‚«v‚Æu‘®«v‚ğó‚¯æ‚Á‚ÄA¨‚¢‚æ‚­”ò‚Î‚·ˆ—
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰ã€Œå‘ãã€ã¨ã€Œå±æ€§ã€ã‚’å—ã‘å–ã£ã¦ã€å‹¢ã„ã‚ˆãé£›ã°ã™å‡¦ç†ï¼ˆãƒ­ãƒ¼ã‚«ãƒ«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç”¨ï¼‰
     public void Initialize(float direction, ElementType playerElement)
     {
         moveDirection = direction;
-        projectileType = playerElement; // ƒvƒŒƒCƒ„[‚Ì‘®«iFire‚âIcej‚ğ©“®ƒRƒs[
-        isInitialized = true;
+        projectileType = playerElement; // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å±æ€§ï¼ˆFireã‚„Iceï¼‰ã‚’è‡ªå‹•ã‚³ãƒ”ãƒ¼
+        isInitialized = true; // â˜…ã“ã“ã§å…ˆã«åˆæœŸåŒ–ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹ï¼
 
-        // Œü‚¢‚Ä‚¢‚é•ûŒüi‰E or ¶j‚É•¨—‘¬“x‚ğƒZƒbƒg‚·‚é
+        // å‘ã„ã¦ã„ã‚‹æ–¹å‘ï¼ˆå³ or å·¦ï¼‰ã«ç‰©ç†é€Ÿåº¦ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
         if (rb != null)
         {
             rb.velocity = new Vector2(speed * moveDirection, 0f);
@@ -45,7 +67,7 @@ public class Projectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // šy’Ç‰Áz–œ‚ªˆêAÕ“Ë‚È‚Ç‚Å’e‚Ì‘¬“x‚ª—‚¿‚½‚è•Ï‚í‚Á‚½‚è‚µ‚È‚¢‚æ‚¤AÁ‚¦‚é‚Ü‚Å‘¬“x‚ğˆê’è‚ÉˆÛ‚·‚é
+        // ä¸‡ãŒä¸€ã€è¡çªãªã©ã§å¼¾ã®é€Ÿåº¦ãŒè½ã¡ãŸã‚Šå¤‰ã‚ã£ãŸã‚Šã—ãªã„ã‚ˆã†ã€æ¶ˆãˆã‚‹ã¾ã§é€Ÿåº¦ã‚’ä¸€å®šã«ç¶­æŒã™ã‚‹
         if (isInitialized && rb != null)
         {
             rb.velocity = new Vector2(speed * moveDirection, 0f);
@@ -54,20 +76,20 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // 1. ƒMƒ~ƒbƒNiIInteractablej‚É“–‚½‚Á‚½ê‡
+        // 1. ã‚®ãƒŸãƒƒã‚¯ï¼ˆIInteractableï¼‰ã«å½“ãŸã£ãŸå ´åˆ
         IInteractable target = other.GetComponent<IInteractable>();
         if (target != null)
         {
-            target.OnInteract(projectileType); // ‘®«‚ğ“`’B
-            Destroy(gameObject);              // ‘¦À‚ÉÁ–Å
+            target.OnInteract(projectileType); // å±æ€§ã‚’ä¼é”
+            Destroy(gameObject);              // å³åº§ã«æ¶ˆæ»…
             return;
         }
 
-        // 2. ƒvƒŒƒCƒ„[‚â•Ç‚È‚Ç‚É“–‚½‚Á‚½ê‡
-        // LayerMask‚ÉŠÜ‚Ü‚ê‚éƒŒƒCƒ„[i•Ç‚â°‚È‚Çj‚ÉÚG‚µ‚½‚©”»’è
+        // 2. ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚„å£ãªã©ã«å½“ãŸã£ãŸå ´åˆ
+        // LayerMaskã«å«ã¾ã‚Œã‚‹ãƒ¬ã‚¤ãƒ¤ãƒ¼ï¼ˆå£ã‚„åºŠãªã©ï¼‰ã«æ¥è§¦ã—ãŸã‹åˆ¤å®š
         if (((1 << other.gameObject.layer) & collisionLayers) != 0)
         {
-            Destroy(gameObject); // ‘¦À‚ÉÁ–Å
+            Destroy(gameObject); // å³åº§ã«æ¶ˆæ»…
         }
     }
 }
