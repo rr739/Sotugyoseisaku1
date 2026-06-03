@@ -87,7 +87,8 @@ public class NetworkManager : MonoBehaviour
                     stageManager.HandleRemoteStageMessage(msg);
                 }
             }
-            else if (currentSceneName == "TutorialStageScene")
+
+             else if (currentSceneName == "TutorialStageScene_Backup")
             {
                 var onlineComm = FindObjectOfType<ObjectOnlineCommunication>();
                 if (onlineComm != null)
