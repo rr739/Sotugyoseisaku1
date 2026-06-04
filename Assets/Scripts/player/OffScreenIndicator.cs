@@ -3,7 +3,7 @@ using UnityEngine;
 public class OffScreenIndicator : MonoBehaviour
 {
     [Header("追尾ターゲット（画面外に行くプレイヤー）")]
-    [SerializeField] private Transform targetPlayer;
+    [SerializeField] private GameObject targetPlayer;
 
     [Header("表示するUIアイコン（ImageのRectTransform）")]
     [SerializeField] private RectTransform indicatorIcon;
@@ -39,7 +39,7 @@ public class OffScreenIndicator : MonoBehaviour
         }
 
         // ターゲットのワールド座標をスクリーン座標に変換
-        Vector3 screenPos = mainCamera.WorldToScreenPoint(targetPlayer.position);
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(targetPlayer.transform.position);
 
         // 画面外にいるかどうかの判定
         bool isOffScreen = screenPos.x < 0 || screenPos.x > Screen.width ||

@@ -3751,7 +3751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de7a6d7b8b560244eb644204a14df229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPlayer: {fileID: 2077867414}
+  targetPlayer: {fileID: 5722955512191438962, guid: 34b52b810d553624a9d96e0f1fdb5b61, type: 3}
   indicatorIcon: {fileID: 486989796}
   margin: 50
   rotateIcon: 0
@@ -3783,7 +3783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de7a6d7b8b560244eb644204a14df229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPlayer: {fileID: 1291256193}
+  targetPlayer: {fileID: 7367143331794722982, guid: eac79c4a988ed454b9a679259ee86c58, type: 3}
   indicatorIcon: {fileID: 252472753}
   margin: 50
   rotateIcon: 0
