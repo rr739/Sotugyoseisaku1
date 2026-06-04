@@ -132,9 +132,6 @@ MonoBehaviour:
   pushSpeedMultiplier: 0.1
   jumpForce: 5
   fireRate: 0.3
-  horizontalAxis: Horizontal
-  jumpButton: Jump
-  fireButton: Fire1
   projectilePrefab: {fileID: 1470277367932372552, guid: 9a7087fc1a3459340b36e7d0b85e9e3a, type: 3}
   firePoint: {fileID: 5717610557424801763}
   groundLayer:
@@ -143,6 +140,7 @@ MonoBehaviour:
   pushableLayer:
     serializedVersion: 2
     m_Bits: 1024
+  projectilePrefabIndex: 0
 --- !u!58 &6539336340659291887
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -188,7 +186,7 @@ Animator:
   m_GameObject: {fileID: 7367143331794722982}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e60002658ca22054482cce7590eb08f3, type: 2}
+  m_Controller: {fileID: 9100000, guid: ef2e2b3167d3c6f47bd7ef8ea3fb359f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
