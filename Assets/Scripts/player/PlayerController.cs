@@ -23,8 +23,8 @@ public class PlayerController : MonoBehaviour
     // ★【Input Manager完全排除】使用するキーをコード側で固定
     private KeyCode leftKey = KeyCode.A;       // 左移動
     private KeyCode rightKey = KeyCode.D;      // 右移動
-    private KeyCode jumpKey = KeyCode.W;       // ジャンプ
-    private KeyCode fireKey = KeyCode.Space;   // ★【変更】攻撃をスペースキーに固定（マウス左クリックなら KeyCode.Mouse0）
+    private KeyCode jumpKey = KeyCode.Space;       // ジャンプ
+    private KeyCode fireKey = KeyCode.Return;   // ★【変更】攻撃をスペースキーに固定（マウス左クリックなら KeyCode.Mouse0）
 
     [Header("各種参照設定")]
     [SerializeField] private GameObject projectilePrefab; // 発射する弾のプレハブ
