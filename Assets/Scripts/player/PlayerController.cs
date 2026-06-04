@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!IsLocalPlayer)
         {
-            transform.position = Vector3.Lerp(transform.position, TargetPosition, 0.15f);
+            transform.position = Vector3.Lerp(transform.position, TargetPosition, 0.05f);
             return;
         }
 

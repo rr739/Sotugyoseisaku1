@@ -47,6 +47,8 @@ public class NetworkIdentity2D : MonoBehaviour
         // 自分が動かす権利を持っていないなら、位置情報の送信はしない
         if (!isOwnedByLocal) return;
 
+        if (objectId >= 1000) return;
+
         // 自分が権利を持っている時は、動いたら通信を送る
         if (Time.time >= nextSendTime && Vector2.Distance(transform.position, lastPosition) > 0.01f)
         {

@@ -131,6 +131,8 @@ public class ObjectOnlineCommunication : MonoBehaviour
             var controller = players[data.char_index].GetComponent<PlayerController>();
             if (controller != null)
             {
+               
+
                 // ゴーストの座標を目標地点として設定
                 controller.TargetPosition = targetPos;
             }
