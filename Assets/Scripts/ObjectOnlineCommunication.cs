@@ -256,9 +256,24 @@ public class ObjectOnlineCommunication : MonoBehaviour
             if (controller != null)
 
             {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
                 // ã‚´ãƒ¼ã‚¹ãƒˆã®åº§æ¨™ã‚’ç›®æ¨™åœ°ç‚¹ã¨ã—ã¦è¨­å®š
 
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
+               
+
+                // ƒS[ƒXƒg‚ÌÀ•W‚ğ–Ú•W’n“_‚Æ‚µ‚Äİ’è
+>>>>>>> origin/WR_new
                 controller.TargetPosition = targetPos;
 
             }
@@ -281,6 +296,11 @@ public class ObjectOnlineCommunication : MonoBehaviour
 
         Vector3 targetPos = new Vector3(data.position_x, data.position_y, 0);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
 
 
@@ -296,6 +316,12 @@ public class ObjectOnlineCommunication : MonoBehaviour
             // 1000ç•ªå°ãªã‚‰0(èµ¤)ã€2000ç•ªå°ãªã‚‰1(é’)
 
             int bulletType = (data.id >= 2000) ? 1 : 0;
+=======
+        if (data.dataType == "spawn_projectile")
+        {
+            // ƒf[ƒ^‚Ì char_indexiŒ‚‚Á‚½l‚ÌFj‚©‚çAo‚·‚×‚«’e‚ÌƒvƒŒƒnƒu‚ğŒˆ‚ß‚é
+            int bulletType = data.char_index;
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
 
 
 
@@ -361,6 +387,39 @@ public class ObjectOnlineCommunication : MonoBehaviour
 
         // æ—¢å­˜ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€ã‚‚ã—ãã¯ä¸Šã§æ–°ã—ãç”Ÿæˆã•ã‚ŒãŸå¼¾ã®åº§æ¨™ã‚’æ›´æ–°ã™ã‚‹
 
+=======
+        if (data.dataType == "spawn_projectile")
+        {
+            // ƒf[ƒ^‚Ì char_indexiŒ‚‚Á‚½l‚ÌFj‚©‚çAo‚·‚×‚«’e‚ÌƒvƒŒƒnƒu‚ğŒˆ‚ß‚é
+            int bulletType = data.char_index;
+
+            if (projectilePrefabs != null && bulletType < projectilePrefabs.Length && projectilePrefabs[bulletType] != null)
+            {
+                // ‘—‚ç‚ê‚Ä‚«‚½ id‚ğæ‚èo‚·
+                float direction = data.id;
+                Quaternion spawnRotation = (direction == -1f) ? Quaternion.identity : Quaternion.Euler(0, 0, 180f);
+
+                // ‘Šè‚Ì‰æ–Ê‚É’e‚ğ¶¬
+                GameObject spawnedProjectile = Instantiate(projectilePrefabs[bulletType], targetPos, spawnRotation);
+
+                // ‘Šè‚Ì‰æ–Ê‚Ì’e‚É‚à‘¬“x‚ğ—^‚¦‚ÄŸè‚É”ò‚Î‚·
+                Projectile projectileScript = spawnedProjectile.GetComponent<Projectile>();
+                if (projectileScript != null)
+                {
+                    // ‘®«‚Í bulletType ‚ª 0 ‚È‚ç FireA1 ‚È‚ç Ice 
+                    ElementType bulletElement = (bulletType == 0) ? ElementType.Fire : ElementType.Ice;
+                    projectileScript.Initialize(direction, bulletElement);
+                   
+                }
+
+                Debug.Log("[ƒCƒxƒ“ƒg¶¬Š®—¹] ‘Šè‚ªŒ‚‚Á‚½’e‚ğƒ[ƒJƒ‹‚Å”­Ë‚µ‚Ü‚µ‚½B");
+            }
+            return; // ’e‚Ìˆ—‚Í‚±‚±‚ÅŠ®‘S‚ÉI—¹I
+        }
+
+
+        // Šù‘¶‚ÌƒIƒuƒWƒFƒNƒgA‚à‚µ‚­‚Íã‚ÅV‚µ‚­¶¬‚³‚ê‚½’e‚ÌÀ•W‚ğXV‚·‚é
+>>>>>>> origin/WR_new
         if (syncObjects.ContainsKey(data.id))
 
         {
@@ -372,6 +431,22 @@ public class ObjectOnlineCommunication : MonoBehaviour
         }
 
     }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
 }
 
+=======
+   
+}
+>>>>>>> origin/WR_new
+<<<<<<< HEAD
+=======
+   
+}
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b

@@ -1,16 +1,33 @@
 using UnityEngine;
+using UnityEngine.XR;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
 
 public class OffScreenIndicator : MonoBehaviour
 
 {
 
     [Header("追尾ターゲット（画面外に行くプレイヤー）")]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
     [SerializeField] private Transform targetPlayer;
+=======
+    [SerializeField] private string targetName ="player";
+    private GameObject targetPlayer;
+>>>>>>> origin/WR_new
 
 
+=======
+    [SerializeField] private string targetName ="player";
+    private GameObject targetPlayer;
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
 
     [Header("表示するUIアイコン（ImageのRectTransform）")]
 
@@ -46,7 +63,21 @@ public class OffScreenIndicator : MonoBehaviour
 
         mainCamera = Camera.main;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
+=======
+        targetPlayer = GameObject.Find(targetName);
+>>>>>>> origin/WR_new
+<<<<<<< HEAD
+=======
+        targetPlayer = GameObject.Find(targetName);
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
         if (indicatorIcon != null)
 
@@ -76,13 +107,30 @@ public class OffScreenIndicator : MonoBehaviour
 
         }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
 
         // ターゲットのワールド座標をスクリーン座標に変換
 
         Vector3 screenPos = mainCamera.WorldToScreenPoint(targetPlayer.position);
+=======
+        targetPlayer = GameObject.Find(targetName);
+
+        // ターゲットのワールド座標をスクリーン座標に変換
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(targetPlayer.transform.position);
+>>>>>>> origin/WR_new
 
 
+=======
+        targetPlayer = GameObject.Find(targetName);
+
+        // ターゲットのワールド座標をスクリーン座標に変換
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(targetPlayer.transform.position);
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
 
         // 画面外にいるかどうかの判定
 
