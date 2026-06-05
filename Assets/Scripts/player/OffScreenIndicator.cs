@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.XR;
 
 public class OffScreenIndicator : MonoBehaviour
 {
     [Header("追尾ターゲット（画面外に行くプレイヤー）")]
-    [SerializeField] private GameObject targetPlayer;
+    [SerializeField] private string targetName ="player";
+    private GameObject targetPlayer;
 
     [Header("表示するUIアイコン（ImageのRectTransform）")]
     [SerializeField] private RectTransform indicatorIcon;
@@ -23,6 +25,8 @@ public class OffScreenIndicator : MonoBehaviour
     {
         mainCamera = Camera.main;
 
+        targetPlayer = GameObject.Find(targetName);
+
         if (indicatorIcon != null)
         {
             indicatorIcon.gameObject.SetActive(false);
@@ -37,6 +41,8 @@ public class OffScreenIndicator : MonoBehaviour
             if (indicatorIcon != null) indicatorIcon.gameObject.SetActive(false);
             return;
         }
+
+        targetPlayer = GameObject.Find(targetName);
 
         // ターゲットのワールド座標をスクリーン座標に変換
         Vector3 screenPos = mainCamera.WorldToScreenPoint(targetPlayer.transform.position);
