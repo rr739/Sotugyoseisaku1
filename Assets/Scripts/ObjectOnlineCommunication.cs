@@ -257,10 +257,13 @@ public class ObjectOnlineCommunication : MonoBehaviour
 
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                 // ã‚´ãƒ¼ã‚¹ãƒˆã®åº§æ¨™ã‚’ç›®æ¨™åœ°ç‚¹ã¨ã—ã¦è¨­å®š
 
 =======
+=======
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
                
 
                 // ƒS[ƒXƒg‚ÌÀ•W‚ğ–Ú•W’n“_‚Æ‚µ‚Äİ’è
@@ -288,6 +291,7 @@ public class ObjectOnlineCommunication : MonoBehaviour
         Vector3 targetPos = new Vector3(data.position_x, data.position_y, 0);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
@@ -303,6 +307,12 @@ public class ObjectOnlineCommunication : MonoBehaviour
             // 1000ç•ªå°ãªã‚‰0(èµ¤)ã€2000ç•ªå°ãªã‚‰1(é’)
 
             int bulletType = (data.id >= 2000) ? 1 : 0;
+=======
+        if (data.dataType == "spawn_projectile")
+        {
+            // ƒf[ƒ^‚Ì char_indexiŒ‚‚Á‚½l‚ÌFj‚©‚çAo‚·‚×‚«’e‚ÌƒvƒŒƒnƒu‚ğŒˆ‚ß‚é
+            int bulletType = data.char_index;
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
 
 
 
@@ -413,6 +423,7 @@ public class ObjectOnlineCommunication : MonoBehaviour
 
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 }
 
@@ -420,3 +431,7 @@ public class ObjectOnlineCommunication : MonoBehaviour
    
 }
 >>>>>>> origin/WR_new
+=======
+   
+}
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f

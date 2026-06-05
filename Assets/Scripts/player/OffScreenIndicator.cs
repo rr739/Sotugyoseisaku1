@@ -1,13 +1,17 @@
 using UnityEngine;
 using UnityEngine.XR;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
 
 public class OffScreenIndicator : MonoBehaviour
 
 {
 
     [Header("追尾ターゲット（画面外に行くプレイヤー）")]
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     [SerializeField] private Transform targetPlayer;
@@ -17,6 +21,10 @@ public class OffScreenIndicator : MonoBehaviour
 >>>>>>> origin/WR_new
 
 
+=======
+    [SerializeField] private string targetName ="player";
+    private GameObject targetPlayer;
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
 
     [Header("表示するUIアイコン（ImageのRectTransform）")]
 
@@ -53,10 +61,14 @@ public class OffScreenIndicator : MonoBehaviour
         mainCamera = Camera.main;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
         targetPlayer = GameObject.Find(targetName);
 >>>>>>> origin/WR_new
+=======
+        targetPlayer = GameObject.Find(targetName);
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
 
         if (indicatorIcon != null)
 
@@ -87,6 +99,7 @@ public class OffScreenIndicator : MonoBehaviour
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
         // ターゲットのワールド座標をスクリーン座標に変換
@@ -100,6 +113,12 @@ public class OffScreenIndicator : MonoBehaviour
 >>>>>>> origin/WR_new
 
 
+=======
+        targetPlayer = GameObject.Find(targetName);
+
+        // ターゲットのワールド座標をスクリーン座標に変換
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(targetPlayer.transform.position);
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
 
         // 画面外にいるかどうかの判定
 

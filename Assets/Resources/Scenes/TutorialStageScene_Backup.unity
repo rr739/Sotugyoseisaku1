@@ -3740,7 +3740,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
   targetName: player1(Clone)
   indicatorIcon: {fileID: 486989796}
 >>>>>>> origin/WR_new
@@ -3775,7 +3778,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
   targetName: player2(Clone)
   indicatorIcon: {fileID: 252472753}
 >>>>>>> origin/WR_new
