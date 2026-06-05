@@ -20,6 +20,8 @@ public class NetworkManager : MonoBehaviour
     private TextAsset IPtextAsset;
 
     public string targetIp;
+    public int targetPort;
+    private float waitIp = 0f;
 
     void Awake()
     {
@@ -38,7 +40,8 @@ public class NetworkManager : MonoBehaviour
             ServerConfig config = JsonUtility.FromJson<ServerConfig>(jsonText);
 
             targetIp = config.serverIp;
-            Debug.Log($"接続先IPを読み込みました: {targetIp}:{config.port}");
+            targetPort = config.port;
+            Debug.Log($"接続先IPを読み込みました: {targetIp}:{targetPort}");
         }
         else
         {
@@ -64,6 +67,14 @@ public class NetworkManager : MonoBehaviour
 
     void Update()
     {
+        waitIp += Time.deltaTime;
+        if(waitIp >= 3.0f)
+        {
+            LoadConfig();
+            waitIp = 0f;
+        }
+      
+
 #if !UNITY_WEBGL || UNITY_EDITOR
         if (ws != null)
         {
@@ -78,7 +89,7 @@ public class NetworkManager : MonoBehaviour
         myRoomID = roomID;
 
 
-        ws = new WebSocket($"ws://10.22.7.178:8080/ws?room_id={roomID}&name_id={playerID}");
+        ws = new WebSocket($"ws://{targetIp}:{targetPort}/ws?room_id={roomID}&name_id={playerID}");
 
         ws.OnOpen += () =>
         {

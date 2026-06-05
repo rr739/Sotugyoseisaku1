@@ -146,43 +146,35 @@ public class ObjectOnlineCommunication : MonoBehaviour
 
         Vector3 targetPos = new Vector3(data.position_x, data.position_y, 0);
 
-        
-        // 届いたIDが「1000番以上（＝弾）」で、まだ画面（辞書）に存在しない場合、その場で即座に生成する
-        if (data.id >= 1000 && !syncObjects.ContainsKey(data.id))
+        if (data.dataType == "spawn_projectile")
         {
-            // IDの千の位から、どっちのプレイヤーが撃った弾かを自動判別
-            // 1000番台なら0(赤)、2000番台なら1(青)
-            int bulletType = (data.id >= 2000) ? 1 : 0;
+            // データの char_index（撃った人の色）から、出すべき弾のプレハブを決める
+            int bulletType = data.char_index;
 
             if (projectilePrefabs != null && bulletType < projectilePrefabs.Length && projectilePrefabs[bulletType] != null)
             {
+                // 送られてきた idを取り出す
+                float direction = data.id;
+                Quaternion spawnRotation = (direction == -1f) ? Quaternion.identity : Quaternion.Euler(0, 0, 180f);
+
                 // 相手の画面に弾を生成
-                GameObject spawnedProjectile = Instantiate(projectilePrefabs[bulletType], targetPos, Quaternion.identity);
-                var identity = spawnedProjectile.GetComponent<NetworkIdentity2D>();
-                if (identity != null)
+                GameObject spawnedProjectile = Instantiate(projectilePrefabs[bulletType], targetPos, spawnRotation);
+
+                // 相手の画面の弾にも速度を与えて勝手に飛ばす
+                Projectile projectileScript = spawnedProjectile.GetComponent<Projectile>();
+                if (projectileScript != null)
                 {
-                    identity.objectId = data.id;
-                    identity.isOwnedByLocal = false; // 自分のものではない
-
-                    // 物理演算を止める
-                    var rb = spawnedProjectile.GetComponent<Rigidbody2D>();
-                    if (rb != null)
-                    {
-                        rb.bodyType = RigidbodyType2D.Kinematic;
-                        rb.velocity = Vector2.zero;
-                    }
-
-                    // 辞書に登録して、次からの位置同期と紐付ける
-                    syncObjects[data.id] = identity;
-                    Debug.Log($"[ネットワーク生成成功] 弾オブジェクト ID: {data.id} を生成しました。");
+                    // 属性は bulletType が 0 なら Fire、1 なら Ice 
+                    ElementType bulletElement = (bulletType == 0) ? ElementType.Fire : ElementType.Ice;
+                    projectileScript.Initialize(direction, bulletElement);
+                   
                 }
+
+                Debug.Log("[イベント生成完了] 相手が撃った弾をローカルで発射しました。");
             }
-            else
-            {
-                Debug.LogError($"[エラー] ObjectOnlineCommunicationのProjectilePrefabsにPrefabが正しく登録されていません！");
-                return;
-            }
+            return; // 弾の処理はここで完全に終了！
         }
+
 
         // 既存のオブジェクト、もしくは上で新しく生成された弾の座標を更新する
         if (syncObjects.ContainsKey(data.id))
@@ -191,4 +183,5 @@ public class ObjectOnlineCommunication : MonoBehaviour
             targetObj.UpdatePositionFromNetwork(targetPos);
         }
     }
+   
 }
