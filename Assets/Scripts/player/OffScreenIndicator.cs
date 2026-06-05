@@ -13,6 +13,9 @@ public class OffScreenIndicator : MonoBehaviour
     [Header("追尾ターゲット（画面外に行くプレイヤー）")]
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
     [SerializeField] private Transform targetPlayer;
 =======
@@ -62,13 +65,19 @@ public class OffScreenIndicator : MonoBehaviour
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
 =======
         targetPlayer = GameObject.Find(targetName);
 >>>>>>> origin/WR_new
+<<<<<<< HEAD
 =======
         targetPlayer = GameObject.Find(targetName);
 >>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
         if (indicatorIcon != null)
 
@@ -100,6 +109,9 @@ public class OffScreenIndicator : MonoBehaviour
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
 
         // ターゲットのワールド座標をスクリーン座標に変換

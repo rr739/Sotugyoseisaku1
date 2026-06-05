@@ -258,12 +258,18 @@ public class ObjectOnlineCommunication : MonoBehaviour
             {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
                 // ã‚´ãƒ¼ã‚¹ãƒˆã®åº§æ¨™ã‚’ç›®æ¨™åœ°ç‚¹ã¨ã—ã¦è¨­å®š
 
 =======
+<<<<<<< HEAD
 =======
 >>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
                
 
                 // ƒS[ƒXƒg‚ÌÀ•W‚ğ–Ú•W’n“_‚Æ‚µ‚Äİ’è
@@ -292,6 +298,9 @@ public class ObjectOnlineCommunication : MonoBehaviour
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
 
 
@@ -424,6 +433,9 @@ public class ObjectOnlineCommunication : MonoBehaviour
     }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
 }
 
@@ -431,7 +443,10 @@ public class ObjectOnlineCommunication : MonoBehaviour
    
 }
 >>>>>>> origin/WR_new
+<<<<<<< HEAD
 =======
    
 }
 >>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
+=======
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
