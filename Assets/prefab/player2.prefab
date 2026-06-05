@@ -130,7 +130,7 @@ MonoBehaviour:
   element: 1
   moveSpeed: 5
   pushSpeedMultiplier: 0.1
-  jumpForce: 5
+  jumpForce: 7
   fireRate: 0.3
   projectilePrefab: {fileID: 1470277367932372552, guid: 9a7087fc1a3459340b36e7d0b85e9e3a, type: 3}
   firePoint: {fileID: 5717610557424801763}

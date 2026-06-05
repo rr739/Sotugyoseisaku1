@@ -3,6 +3,7 @@ using WebSocket = NativeWebSocket.WebSocket;
 using System;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -14,6 +15,41 @@ public class NetworkManager : MonoBehaviour
     public int myPlayerIndex;
     public int myCharaIndex;
     public int myRealSelectedChar = -1;
+
+    [SerializeField]
+    private TextAsset IPtextAsset;
+
+    public string targetIp;
+    public int targetPort;
+    private float waitIp = 0f;
+
+    void Awake()
+    {
+        LoadConfig();
+    }
+
+    void LoadConfig()
+    {
+        string filePath = Path.Combine(Application.streamingAssetsPath, "IP.txt");
+
+        if (File.Exists(filePath))
+        {
+            string jsonText = File.ReadAllText(filePath);
+
+            // JSONをクラスに変換
+            ServerConfig config = JsonUtility.FromJson<ServerConfig>(jsonText);
+
+            targetIp = config.serverIp;
+            targetPort = config.port;
+            Debug.Log($"接続先IPを読み込みました: {targetIp}:{targetPort}");
+        }
+        else
+        {
+            // ファイルがない場合のデフォルト設定
+            targetIp = "localhost";
+            Debug.LogWarning("設定ファイルがないのでlocalhostに接続します");
+        }
+    }
 
     void Start()
     {
@@ -31,6 +67,14 @@ public class NetworkManager : MonoBehaviour
 
     void Update()
     {
+        waitIp += Time.deltaTime;
+        if(waitIp >= 3.0f)
+        {
+            LoadConfig();
+            waitIp = 0f;
+        }
+      
+
 #if !UNITY_WEBGL || UNITY_EDITOR
         if (ws != null)
         {
@@ -45,7 +89,7 @@ public class NetworkManager : MonoBehaviour
         myRoomID = roomID;
 
 
-        ws = new WebSocket($"ws://10.22.7.178:8080/ws?room_id={roomID}&name_id={playerID}");
+        ws = new WebSocket($"ws://{targetIp}:{targetPort}/ws?room_id={roomID}&name_id={playerID}");
 
         ws.OnOpen += () =>
         {
