@@ -3,6 +3,7 @@ using WebSocket = NativeWebSocket.WebSocket;
 using System;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -14,6 +15,38 @@ public class NetworkManager : MonoBehaviour
     public int myPlayerIndex;
     public int myCharaIndex;
     public int myRealSelectedChar = -1;
+
+    [SerializeField]
+    private TextAsset IPtextAsset;
+
+    public string targetIp;
+
+    void Awake()
+    {
+        LoadConfig();
+    }
+
+    void LoadConfig()
+    {
+        string filePath = Path.Combine(Application.streamingAssetsPath, "IP.txt");
+
+        if (File.Exists(filePath))
+        {
+            string jsonText = File.ReadAllText(filePath);
+
+            // JSONをクラスに変換
+            ServerConfig config = JsonUtility.FromJson<ServerConfig>(jsonText);
+
+            targetIp = config.serverIp;
+            Debug.Log($"接続先IPを読み込みました: {targetIp}:{config.port}");
+        }
+        else
+        {
+            // ファイルがない場合のデフォルト設定
+            targetIp = "localhost";
+            Debug.LogWarning("設定ファイルがないのでlocalhostに接続します");
+        }
+    }
 
     void Start()
     {
