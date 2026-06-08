@@ -3,6 +3,10 @@ using UnityEngine.UIElements;
 
 public class CameraController : MonoBehaviour
 {
+
+    // ★外部（ObjectOnlineCommunication）から「生成された自分」を受け取るための変数
+    private Transform targetPlayer;
+
     [Header("プレイヤーの設定")]
 
     [SerializeField] private string targetName1 = "player1(Clone)";
@@ -18,6 +22,16 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
+
+        // ターゲットがまだ生成されていない、または消滅した場合は何もしない
+        if (targetPlayer == null || !targetPlayer.gameObject.activeInHierarchy) return;
+
+        // キャラが落下しきい値より上にいる（生きている）かチェック
+        bool isAlive = targetPlayer.position.y > fallThreshold;
+
+        // 生きていればそのキャラの座標、落ちていたら現在のカメラ位置をキープする
+        Vector3 targetPosition = isAlive ? targetPlayer.position : transform.position;
+
         player1 = GameObject.Find(targetName1);
         player2 = GameObject.Find(targetName2);
         if (player1 == null || player2 == null) return;
@@ -25,8 +39,7 @@ public class CameraController : MonoBehaviour
         // 1Pと2Pがそれぞれ正常な位置（穴に落ちていない状態）にいるかチェック
         bool p1IsAlive = player1.transform.position.y > fallThreshold;
         bool p2IsAlive = player2.transform.position.y > fallThreshold;
-
-        Vector3 targetPosition = transform.position;
+        _ = transform.position;
 
         if (p1IsAlive && p2IsAlive)
         {

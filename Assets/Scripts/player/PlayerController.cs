@@ -289,6 +289,7 @@ public class PlayerController : MonoBehaviour
 
         var jsonMsg = JsonUtility.ToJson(playerData);
         await networkManager.SendMessageAsync(jsonMsg);
+<<<<<<< HEAD
     }
 
 
@@ -309,5 +310,27 @@ public class PlayerController : MonoBehaviour
 
         string json = JsonUtility.ToJson(spawnData);
         await networkManager.SendMessageAsync(json);
+=======
+    }
+
+
+    private async void SendSpawnProjectileEvent(Vector3 pos, float dir, int bulletIndex)
+    {
+        if (networkManager == null) return;
+
+        InGameMoveData spawnData = new InGameMoveData();
+        spawnData.dataType = "spawn_projectile";
+        spawnData.room_id = networkManager.myRoomID;
+
+
+        spawnData.char_index = bulletIndex;
+
+        spawnData.position_x = pos.x;
+        spawnData.position_y = pos.y;
+        spawnData.id = (int)dir;
+
+        string json = JsonUtility.ToJson(spawnData);
+        await networkManager.SendMessageAsync(json);
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
     }
 }

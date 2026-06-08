@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -613,7 +613,15 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
+<<<<<<< HEAD
+<<<<<<< HEAD
+  m_AnchoredPosition: {x: -498.19003, y: -120.42}
+=======
   m_AnchoredPosition: {x: -444.89, y: -120.42}
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
+=======
+  m_AnchoredPosition: {x: -498.19003, y: -120.42}
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
   m_SizeDelta: {x: 528.59, y: 145.67}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &201536000
@@ -783,7 +791,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 228.9, y: -324.4}
+  m_AnchoredPosition: {x: 448.08, y: -354.04}
   m_SizeDelta: {x: 196.81, y: 71.97}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &530461062
@@ -823,8 +831,18 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
+<<<<<<< HEAD
+<<<<<<< HEAD
+  m_AnchoredPosition: {x: -59.01, y: 72.71}
+  m_SizeDelta: {x: 1210.96, y: 145.43}
+=======
   m_AnchoredPosition: {x: 79.762, y: 72.71}
   m_SizeDelta: {x: 1381.9, y: 145.43}
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
+=======
+  m_AnchoredPosition: {x: -59.01, y: 72.71}
+  m_SizeDelta: {x: 1210.96, y: 145.43}
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &530461064
 MonoBehaviour:
@@ -1054,7 +1072,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 672.3, y: 35.985}
+  m_AnchoredPosition: {x: 448.06, y: 35.979996}
   m_SizeDelta: {x: 196.81, y: 71.97}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &738954009
@@ -1240,7 +1258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1844,7 +1862,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1910,8 +1928,18 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
+<<<<<<< HEAD
+<<<<<<< HEAD
+  m_AnchoredPosition: {x: -59.012028, y: -317.1}
+  m_SizeDelta: {x: 1211, y: 145.86}
+=======
   m_AnchoredPosition: {x: -141.94, y: -317.1}
   m_SizeDelta: {x: 938.49, y: 145.86}
+>>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
+=======
+  m_AnchoredPosition: {x: -59.012028, y: -317.1}
+  m_SizeDelta: {x: 1211, y: 145.86}
+>>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1468616238
 MonoBehaviour:
@@ -2055,7 +2083,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 598, y: -325.28}
+  m_AnchoredPosition: {x: 747, y: -325.27}
   m_SizeDelta: {x: 307.95, y: 129.53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1507809816
@@ -2261,7 +2289,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -375.7, y: 261.92}
+  m_AnchoredPosition: {x: -429, y: 261.92}
   m_SizeDelta: {x: 666.98, y: 145.67}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1604147325
@@ -3411,7 +3439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
