@@ -3,23 +3,16 @@ using UnityEngine.UIElements;
 
 public class CameraController : MonoBehaviour
 {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
+
     // ★外部（ObjectOnlineCommunication）から「生成された自分」を受け取るための変数
     private Transform targetPlayer;
-=======
->>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
+
     [Header("プレイヤーの設定")]
 
     [SerializeField] private string targetName1 = "player1(Clone)";
     [SerializeField] private string targetName2 = "player2(Clone)";
     private GameObject player1;
     private GameObject player2;
-<<<<<<< HEAD
-=======
->>>>>>> origin/WR_new
->>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
     [Header("カメラの追尾スピード（なめらかさ）")]
     [Range(0.01f, 1f)][SerializeField] private float smoothSpeed = 0.125f;
@@ -29,9 +22,7 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
+
         // ターゲットがまだ生成されていない、または消滅した場合は何もしない
         if (targetPlayer == null || !targetPlayer.gameObject.activeInHierarchy) return;
 
@@ -40,8 +31,7 @@ public class CameraController : MonoBehaviour
 
         // 生きていればそのキャラの座標、落ちていたら現在のカメラ位置をキープする
         Vector3 targetPosition = isAlive ? targetPlayer.position : transform.position;
-=======
->>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
+
         player1 = GameObject.Find(targetName1);
         player2 = GameObject.Find(targetName2);
         if (player1 == null || player2 == null) return;
@@ -49,8 +39,7 @@ public class CameraController : MonoBehaviour
         // 1Pと2Pがそれぞれ正常な位置（穴に落ちていない状態）にいるかチェック
         bool p1IsAlive = player1.transform.position.y > fallThreshold;
         bool p2IsAlive = player2.transform.position.y > fallThreshold;
-
-        Vector3 targetPosition = transform.position;
+        _ = transform.position;
 
         if (p1IsAlive && p2IsAlive)
         {
@@ -67,10 +56,6 @@ public class CameraController : MonoBehaviour
             // 1Pだけが落ちたなら、2Pだけを追いかける
             targetPosition = player2.transform.position;
         }
-<<<<<<< HEAD
-=======
->>>>>>> origin/WR_new
->>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
 
         // カメラのZ位置（-10など）は元の値を維持する
         targetPosition.z = transform.position.z;

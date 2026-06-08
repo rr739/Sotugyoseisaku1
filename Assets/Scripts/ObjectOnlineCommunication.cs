@@ -9,20 +9,27 @@ using UnityEngine;
 public class ObjectOnlineCommunication : MonoBehaviour
 
 {
+
     [SerializeField] private GameObject[] playersPrefab; // 0:èµ¤ã®Prefab, 1:é’ã®Prefab
 
     public Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
 
+
+
     [SerializeField] private GameObject ghostPrefab;
 
     public Dictionary<int, GameObject> ghostObjects = new Dictionary<int, GameObject>();
+
+
 
     [Header("é£›ã°ã™ã‚‚ã®ï¼ˆå¼¾ãªã©ï¼‰ã®Prefabãƒªã‚¹ãƒˆ")]
 
     [SerializeField] private GameObject[] projectilePrefabs; // 0:èµ¤ã®å¼¾ã€1:é’ã®å¼¾ãªã©ã‚’ç™»éŒ²
 
 
+
     public Dictionary<int, NetworkIdentity2D> syncObjects = new Dictionary<int, NetworkIdentity2D>();
+
 
 
     void Start()
@@ -256,33 +263,9 @@ public class ObjectOnlineCommunication : MonoBehaviour
             if (controller != null)
 
             {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
->>>>>>> 2a30fd2cb77d9c04eaedb2b551e05a9b3d0850df
 
                 // ã‚´ãƒ¼ã‚¹ãƒˆã®åº§æ¨™ã‚’ç›®æ¨™åœ°ç‚¹ã¨ã—ã¦è¨­å®š
 
-=======
-<<<<<<< HEAD
-               
-
-                // ï¿½Sï¿½[ï¿½Xï¿½gï¿½Ìï¿½ï¿½Wï¿½ï¿½Ú•Wï¿½nï¿½_ï¿½Æ‚ï¿½ï¿½Äİ’ï¿½
-=======
-<<<<<<< HEAD
-=======
->>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
-=======
->>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
-               
-
-                // ƒS[ƒXƒg‚ÌÀ•W‚ğ–Ú•W’n“_‚Æ‚µ‚Äİ’è
->>>>>>> 2a30fd2cb77d9c04eaedb2b551e05a9b3d0850df
->>>>>>> origin/WR_new
                 controller.TargetPosition = targetPos;
 
             }
@@ -305,14 +288,6 @@ public class ObjectOnlineCommunication : MonoBehaviour
 
         Vector3 targetPos = new Vector3(data.position_x, data.position_y, 0);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
->>>>>>> 2a30fd2cb77d9c04eaedb2b551e05a9b3d0850df
 
 
 
@@ -328,12 +303,6 @@ public class ObjectOnlineCommunication : MonoBehaviour
             // 1000ç•ªå°ãªã‚‰0(èµ¤)ã€2000ç•ªå°ãªã‚‰1(é’)
 
             int bulletType = (data.id >= 2000) ? 1 : 0;
-=======
-        if (data.dataType == "spawn_projectile")
-        {
-            // ƒf[ƒ^‚Ì char_indexiŒ‚‚Á‚½l‚ÌFj‚©‚çAo‚·‚×‚«’e‚ÌƒvƒŒƒnƒu‚ğŒˆ‚ß‚é
-            int bulletType = data.char_index;
->>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
 
 
 
@@ -399,134 +368,6 @@ public class ObjectOnlineCommunication : MonoBehaviour
 
         // æ—¢å­˜ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€ã‚‚ã—ãã¯ä¸Šã§æ–°ã—ãç”Ÿæˆã•ã‚ŒãŸå¼¾ã®åº§æ¨™ã‚’æ›´æ–°ã™ã‚‹
 
-=======
-        if (data.dataType == "spawn_projectile")
-        {
-            // ƒf[ƒ^‚Ì char_indexiŒ‚‚Á‚½l‚ÌFj‚©‚çAo‚·‚×‚«’e‚ÌƒvƒŒƒnƒu‚ğŒˆ‚ß‚é
-            int bulletType = data.char_index;
-
-
-
-            if (projectilePrefabs != null && bulletType < projectilePrefabs.Length && projectilePrefabs[bulletType] != null)
-
-            {
-
-                // ç›¸æ‰‹ã®ç”»é¢ã«å¼¾ã‚’ç”Ÿæˆ
-
-                GameObject spawnedProjectile = Instantiate(projectilePrefabs[bulletType], targetPos, Quaternion.identity);
-
-                var identity = spawnedProjectile.GetComponent<NetworkIdentity2D>();
-
-                if (identity != null)
-
-                {
-
-                    identity.objectId = data.id;
-
-                    identity.isOwnedByLocal = false; // è‡ªåˆ†ã®ã‚‚ã®ã§ã¯ãªã„
-
-
-
-                    // ç‰©ç†æ¼”ç®—ã‚’æ­¢ã‚ã‚‹
-
-                    var rb = spawnedProjectile.GetComponent<Rigidbody2D>();
-
-                    if (rb != null)
-
-                    {
-
-                        rb.bodyType = RigidbodyType2D.Kinematic;
-
-                        rb.velocity = Vector2.zero;
-
-                    }
-
-
-
-                    // è¾æ›¸ã«ç™»éŒ²ã—ã¦ã€æ¬¡ã‹ã‚‰ã®ä½ç½®åŒæœŸã¨ç´ä»˜ã‘ã‚‹
-
-                    syncObjects[data.id] = identity;
-
-                    Debug.Log($"[ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ç”ŸæˆæˆåŠŸ] å¼¾ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ ID: {data.id} ã‚’ç”Ÿæˆã—ã¾ã—ãŸã€‚");
-
-                }
-
-            }
-
-            else
-
-            {
-
-                Debug.LogError($"[ã‚¨ãƒ©ãƒ¼] ObjectOnlineCommunicationã®ProjectilePrefabsã«PrefabãŒæ­£ã—ãç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“ï¼");
-
-                return;
-
-            }
-
-        }
-
-
-
-        // æ—¢å­˜ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€ã‚‚ã—ãã¯ä¸Šã§æ–°ã—ãç”Ÿæˆã•ã‚ŒãŸå¼¾ã®åº§æ¨™ã‚’æ›´æ–°ã™ã‚‹
-
-=======
-        if (data.dataType == "spawn_projectile")
-        {
-            // ï¿½fï¿½[ï¿½^ï¿½ï¿½ char_indexï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ÌFï¿½jï¿½ï¿½ï¿½ï¿½Aï¿½oï¿½ï¿½ï¿½×‚ï¿½ï¿½eï¿½Ìƒvï¿½ï¿½ï¿½nï¿½uï¿½ï¿½ï¿½ï¿½ß‚ï¿½
-            int bulletType = data.char_index;
-
-            if (projectilePrefabs != null && bulletType < projectilePrefabs.Length && projectilePrefabs[bulletType] != null)
-            {
-<<<<<<< HEAD
-                // ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ idï¿½ï¿½ï¿½ï¿½oï¿½ï¿½
-                float direction = data.id;
-                Quaternion spawnRotation = (direction == -1f) ? Quaternion.identity : Quaternion.Euler(0, 0, 180f);
-
-                // ï¿½ï¿½ï¿½ï¿½Ì‰ï¿½Ê‚É’eï¿½ğ¶ï¿½
-                GameObject spawnedProjectile = Instantiate(projectilePrefabs[bulletType], targetPos, spawnRotation);
-
-                // ï¿½ï¿½ï¿½ï¿½Ì‰ï¿½Ê‚Ì’eï¿½É‚ï¿½ï¿½ï¿½xï¿½ï¿½^ï¿½ï¿½ï¿½Äï¿½ï¿½ï¿½É”ï¿½Î‚ï¿½
-                Projectile projectileScript = spawnedProjectile.GetComponent<Projectile>();
-                if (projectileScript != null)
-                {
-                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ bulletType ï¿½ï¿½ 0 ï¿½È‚ï¿½ Fireï¿½A1 ï¿½È‚ï¿½ Ice 
-=======
-                // ‘—‚ç‚ê‚Ä‚«‚½ id‚ğæ‚èo‚·
-                float direction = data.id;
-                Quaternion spawnRotation = (direction == -1f) ? Quaternion.identity : Quaternion.Euler(0, 0, 180f);
-
-                // ‘Šè‚Ì‰æ–Ê‚É’e‚ğ¶¬
-                GameObject spawnedProjectile = Instantiate(projectilePrefabs[bulletType], targetPos, spawnRotation);
-
-                // ‘Šè‚Ì‰æ–Ê‚Ì’e‚É‚à‘¬“x‚ğ—^‚¦‚ÄŸè‚É”ò‚Î‚·
-                Projectile projectileScript = spawnedProjectile.GetComponent<Projectile>();
-                if (projectileScript != null)
-                {
-                    // ‘®«‚Í bulletType ‚ª 0 ‚È‚ç FireA1 ‚È‚ç Ice 
->>>>>>> 2a30fd2cb77d9c04eaedb2b551e05a9b3d0850df
-                    ElementType bulletElement = (bulletType == 0) ? ElementType.Fire : ElementType.Ice;
-                    projectileScript.Initialize(direction, bulletElement);
-                   
-                }
-
-<<<<<<< HEAD
-                Debug.Log("[ï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½] ï¿½ï¿½ï¿½è‚ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½eï¿½ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½Å”ï¿½ï¿½Ë‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½B");
-            }
-            return; // ï¿½eï¿½Ìï¿½ï¿½ï¿½ï¿½Í‚ï¿½ï¿½ï¿½ï¿½ÅŠï¿½ï¿½Sï¿½ÉIï¿½ï¿½ï¿½I
-        }
-
-
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ÌƒIï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íï¿½ÅVï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½eï¿½Ìï¿½ï¿½Wï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½
-=======
-                Debug.Log("[ƒCƒxƒ“ƒg¶¬Š®—¹] ‘Šè‚ªŒ‚‚Á‚½’e‚ğƒ[ƒJƒ‹‚Å”­Ë‚µ‚Ü‚µ‚½B");
-            }
-            return; // ’e‚Ìˆ—‚Í‚±‚±‚ÅŠ®‘S‚ÉI—¹I
-        }
-
-
-        // Šù‘¶‚ÌƒIƒuƒWƒFƒNƒgA‚à‚µ‚­‚Íã‚ÅV‚µ‚­¶¬‚³‚ê‚½’e‚ÌÀ•W‚ğXV‚·‚é
->>>>>>> 2a30fd2cb77d9c04eaedb2b551e05a9b3d0850df
->>>>>>> origin/WR_new
         if (syncObjects.ContainsKey(data.id))
 
         {
@@ -538,28 +379,6 @@ public class ObjectOnlineCommunication : MonoBehaviour
         }
 
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
->>>>>>> 2a30fd2cb77d9c04eaedb2b551e05a9b3d0850df
 
 }
 
-=======
-   
-}
->>>>>>> origin/WR_new
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-   
-}
->>>>>>> f55d313c87ee20eb0d43e86588a5daea06cf825f
-=======
->>>>>>> 8ccc98b391df13c92b62c46b84a5a42817d04d6b
->>>>>>> 2a30fd2cb77d9c04eaedb2b551e05a9b3d0850df
